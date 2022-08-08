@@ -25,7 +25,7 @@
    </cyclicBufferTracker>
    <asynchronousSending>false</asynchronousSending>
 </appender>
-
+//test
   
   <appender name="INFO_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
