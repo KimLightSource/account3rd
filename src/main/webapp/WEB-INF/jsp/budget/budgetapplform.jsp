@@ -262,17 +262,15 @@ function createAccountPeriod(){//회계연도
  function createDepartment(){//사업장,부서그리드
 	 rowData=[];
 	  	var columnDefs = [
-	  		{headerName: "사업장코드", hide:"true",field: "workplaceCode",sort:"asc", width:100
-		      },
-		      {headerName: "사업장명", hide:"true", field: "workplaceName",width:250},
-	  		{headerName: "부서코드", field: "deptCode",sort:"asc", width:200
-		      },
-		      {headerName: "부서명", field: "deptName",width:250},
+	  		{headerName: "사업장코드", hide:"true",field: "workplaceCode",sort:"asc", width:100},
+			{headerName: "사업장명", hide:"true", field: "workplaceName",width:250},
+	  		{headerName: "부서코드", field: "deptCode",sort:"asc", width:200},
+			{headerName: "부서명", field: "deptName",width:250},
 		  ];	  	
 		  gridOptions5 = {
 				      columnDefs: columnDefs,
 				      rowSelection:'single', //row는 하나만 선택 가능
-				      defaultColDef: {editable: false }, // 정의하지 않은 컬럼은 자동으로 설정
+				      defaultColDef: {editable: false}, // 정의하지 않은 컬럼은 자동으로 설정
 		 			  onGridReady: function (event){// onload 이벤트와 유사 ready 이후 필요한 이벤트 삽입한다.
 		        			event.api.sizeColumnsToFit();
 		    		  },
@@ -443,7 +441,6 @@ function ableCurrentInput() {
 	for(var i=1; i<=12;i++){
 		var input=document.querySelector("#m"+i);//m1~m12
 		input.disabled=false;//비활성화를 활성화로 변경i
-		input.value=0;
 	}
 }
 
