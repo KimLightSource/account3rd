@@ -49,8 +49,6 @@
 	</style>
 	<script>
 		$(document).ready(function() {
-			$("#textarea").attr("readonly", true);
-			$("#title").attr("readonly", true);
 			createAccount();
 			showAccount();
 
@@ -169,8 +167,9 @@
 			}
 		}
 		function fn_addtoBoard(){
-			$("#textarea").attr("readonly", false);
-			$("#title").attr("readonly", false);
+			$("#textarea").attr("disabled", false);
+			$("#title").attr("disabled", false);
+			$("#id").attr("disabled", false);
 			$("#textarea").focus();
 			$("#edit").hide();
 			$("#editdiv").html("<a href='#' id='edit' class='btn btn-primary' onClick='fn_edit()'>수정완료</a> ")
@@ -195,13 +194,20 @@
 			display: inline;
 			margin-left: 500px;
 		}
+		table{border-collapse : collapse;}
+		tr{ border-top: 1px solid gray;
+
+		}
+		th{
+			padding: 10px;}
+
 	</style>
 </head>
 <body class="bg-gradient-primary">
 <!-- 게시판 위 버튼 -->
 <h4 id="header_board2">게시판</h4>
-<a href='${pageContext.request.contextPath}/base/boardwriteform'
-   style="margin-left: 1084px;" class="btn btn-primary">글쓰기</a>
+<div style="float: right;"><a href='${pageContext.request.contextPath}/base/boardwriteform'
+							  class="btn btn-primary">글쓰기</a></div>
 <hr>
 <div style="float: left; width: 100%; padding: 10px;">
 	<div align="center">
@@ -224,29 +230,30 @@
 					</button>
 				</div>
 
+
 				<div class="modal-body">
 
 					<table>
 
 						<tr>
 							<th>제목</th>
-							<td colspan="2"><input style="width: 500px" type="text" id="title" name="title" readonly/></td>
+							<td colspan="2"><input style="width: 500px" type="text" id="title" name="title" disabled="disabled"/></td>
 						</tr>
 						<tr>
-							<th>글 번호</th>
+							<th>글번호</th>
 							<td>
-								<input style="width: 100px" type="text" id="id" name="id"
-									   readonly/>
+								<input style="width: 100px;" type="text" id="id" name="id"
+									   readonly disabled="disabled"/>
 							</td>
 							<td> 조회수:
 								<input style="width: 100px" type="text" id="lookup"
-									   readonly/>
+									   disabled="disabled"/>
 							</td>
 						</tr>
 						<tr>
 							<th>작성자</th>
 							<td><input style="width: 300x" type="text" id="writer"
-									   readonly/></td>
+									   disabled="disabled"/></td>
 							<td><div id="writtenday"></div></td>
 
 
@@ -255,7 +262,7 @@
 							<th>내용</th>
 							<td colspan="2">
 								<textarea style="width: 500px" rows="20" cols="20" name="contents"
-										  id="textarea" >
+										  id="textarea"disabled="disabled" >
 								</textarea>
 							</td>
 
