@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import kr.co.seoulit.account.budget.formulation.to.BudgetBean;
 import kr.co.seoulit.account.budget.formulation.to.BudgetStatusBean;
+import org.springframework.ui.ModelMap;
 
 public interface FormulationService {
 	
@@ -15,5 +16,8 @@ public interface FormulationService {
 	public ArrayList<BudgetBean> findBudgetAppl(BudgetBean bean);
 	
 	public Vector<BudgetStatusBean> findBudgetStatus(BudgetBean bean);
-	
+
+	public ModelMap registerBudget(BudgetBean bean);
+
+	public ModelMap modifyBudget(BudgetBean bean);
 }
