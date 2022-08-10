@@ -81,6 +81,78 @@
 		]]>
     </insert>
 
+	<insert id="insertBudget" parameterType="kr.co.seoulit.account.budget.formulation.to.BudgetBean">
+    		<![CDATA[
+		INSERT INTO BUDGET
+		(
+			DEPT_CODE,
+			WORKPLACE_CODE,
+			ACCOUNT_INNER_CODE,
+			ACCOUNT_PERIOD_NO,
+			BUDGETING_CODE,
+			M1_BUDGET,
+			M2_BUDGET,
+			M3_BUDGET,
+			M4_BUDGET,
+			M5_BUDGET,
+			M6_BUDGET,
+			M7_BUDGET,
+			M8_BUDGET,
+			M9_BUDGET,
+			M10_BUDGET,
+			M11_BUDGET,
+			M12_BUDGET
+		)
+		VALUES
+			(
+				#{deptCode},
+				#{workplaceCode},
+				#{accountInnerCode},
+				#{accountPeriodNo},
+				#{budgetingCode},
+				#{m1Budget},
+				#{m2Budget},
+				#{m3Budget},
+				#{m4Budget},
+				#{m5Budget},
+				#{m6Budget},
+				#{m7Budget},
+				#{m8Budget},
+				#{m9Budget},
+				#{m10Budget},
+				#{m11Budget},
+				#{m12Budget}
+
+			)
+
+		]]>
+    </insert>
+	<update id="updateBudget" parameterType="kr.co.seoulit.account.budget.formulation.to.BudgetBean">
+    		<![CDATA[
+		update BUDGET
+		set
+			M1_BUDGET = #{m1Budget},
+			M2_BUDGET = #{m2Budget},
+			M3_BUDGET = #{m3Budget},
+			M4_BUDGET = #{m4Budget},
+			M5_BUDGET = #{m5Budget},
+			M6_BUDGET = #{m6Budget},
+			M7_BUDGET = #{m7Budget},
+			M8_BUDGET = #{m8Budget},
+			M9_BUDGET = #{m9Budget},
+			M10_BUDGET = #{m10Budget},
+			M11_BUDGET = #{m11Budget},
+			M12_BUDGET = #{m12Budget}
+		WHERE
+			DEPT_CODE = #{deptCode} AND
+			WORKPLACE_CODE = #{workplaceCode} AND
+			ACCOUNT_INNER_CODE = #{accountInnerCode} AND
+			ACCOUNT_PERIOD_NO = #{accountPeriodNo} AND
+			BUDGETING_CODE = #{budgetingCode}
+		]]>
+    </update>
+
+
 	<insert id="formationBudget" parameterType="map">
     		<![CDATA[
 		UPDATE BUDGET

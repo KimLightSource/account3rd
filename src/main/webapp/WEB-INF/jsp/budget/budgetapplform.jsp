@@ -121,21 +121,53 @@ var dataSet={
 			var inputInt=input.value.split(",").join("");//보낸값이 담김 
 			dataSet["m"+i+"Budget"]=parseInt(inputInt);//m1Budet1~12에 담은 값
 			}
-		
 		$.ajax({
 	        type: "POST",
 	        url: "${pageContext.request.contextPath}/budget/budgetlist",
 	        data: {
-	            "budgetObj":JSON.stringify(dataSet)
+				"budgetObj":JSON.stringify(dataSet)
 	        },//dataSet정보
 	        dataType: "json",
 	        async:false,
-	        success: function (jsonObj) {
-	        	console.log(jsonObj);
-	            alert("신청 완료");
+	        success: function (data) {
+	        	console.log(data);
+				if(data.errorCode == -1){
+					alert("서버 오류");
+				}
+				else if(data.errorCode == -2) { //BUDGET의 PK값 5개가 모두 동일할 경우 실행됨
+					var answer = confirm("동일한 연도, 사업장, 부서, 계정과목의 예산 신청이 완료된 상태입니다" +
+					 			"해당 예산 신청을 업데이트 하시겠습니까?")
+					if(answer) { //위의 confirm에서 확인을 누른경우
+						modifyBudgetList();
+					}
+				}
+	            else alert("신청 완료");
 	        }
 	    });
 	}
+
+function modifyBudgetList() { // 예산 신청에서 PK값이 중복되는 예산데이터가 있을경우, 해당 메서드 실행
+	$.ajax({
+		type: "PUT",
+		url: "${pageContext.request.contextPath}/budget/budgetlist",
+		data: {
+			"budgetObj":JSON.stringify(dataSet)
+		},
+		dataType: "json",
+		async:false,
+		success: function (data) {
+			console.log(data);
+			if(data.errorCode == -1){
+				console.log(data)
+				alert("서버 오류");
+			}
+			else {
+				console.log(data)
+				alert("신청 완료");
+			}
+		}
+	});
+}
 
 function createAccountPeriod(){//회계연도
 	rowData=[];
@@ -348,6 +380,7 @@ function createDetailBudget() {
 	    			  dataSet["accountInnerCode"]=selectedRow["accountInnerCode"];//dataSet의 accountInnerCode가 내가 선택한 행의 값으로 변경
 
 	    			  showOrganizedBudget();//출력되는 td행에 관함
+					  ableCurrentInput(); // 당기 예산 신청 인풋 텍스트 수정가능
 	    		  }
 	   }
 	 accountDetailGrid = document.querySelector('#detailBudgetGrid');//id를 찾아 변수에담음
@@ -399,20 +432,19 @@ function showOrganizedBudget(){
         				q.disabled=false;
         				q.value=numToMoney(num+"");
         				num=0;
-
-        				var sum=document.querySelector("#sum");
-            			sum.disabled=false;
-            			var n1=eval(q1.value);
-            			var n2=eval(q2.value);
-            			var n3=eval(q3.value);
-            			var n4=eval(q4.value);
-            			
-            			sum.value=n1+n2+n3+n4;
-        			}	        		
+        			}
         		}        		
         	}
         }
     });
+}
+
+function ableCurrentInput() {
+	for(var i=1; i<=12;i++){
+		var input=document.querySelector("#m"+i);//m1~m12
+		input.disabled=false;//비활성화를 활성화로 변경i
+		input.value=0;
+	}
 }
 
 //숫자를 돈 형식으로 바꿔주는 함수
@@ -474,14 +506,19 @@ function showDetailBudget(code){//우측 그리드	좌측 그리드에서 선택
 
 function qRefresh(){
 	var num=0;
+	var num1=0;
     for(var i=1; i<=12;i++){
     	var input=document.querySelector("#m"+i);//m1~m12
-    	num+=parseInt(input.value.split(",").join(""));//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
+		if(input.value == "") num += 0;
+    	else num+=parseInt(input.value.split(",").join(""));//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
     	if(i%3==0){//i에 3을나눠서 0일떄 즉 3,6,9,12일시
 			var q=document.querySelector("#q"+i/3);//분기1,2,3,4
 			q.value=numToMoney(num+"");//돈형식으로 만들어주는 함수에 전송
+			num1 += num
 			num=0;
 		}
+		var sum = document.querySelector("#sum");
+		sum.value=numToMoney(num1+"");
     }
 }
 
@@ -612,11 +649,11 @@ function checkMonetaryFormat(){
       <small>
       <table>
       <tr><td>월</td><td>금액</td><td>월</td><td>금액</td><td>월</td><td>금액</td><td>분기</td><td>금액</td></tr>
-      <tr><td>01</td><td><input id="m1" type="text"></td><td>02</td><td><input id="m2" type="text"></td><td>03</td><td><input id="m3" type="text"></td><td>1분기</td><td><input id="q1" type="text" readonly></td></tr>
-      <tr><td>04</td><td><input id="m4" type="text"></td><td>05</td><td><input id="m5" type="text"></td><td>06</td><td><input id="m6" type="text"></td><td>2분기</td><td><input id="q2" type="text" readonly></td></tr>
-      <tr><td>07</td><td><input id="m7" type="text"></td><td>08</td><td><input id="m8" type="text"></td><td>09</td><td><input id="m9" type="text"></td><td>3분기</td><td><input id="q3" type="text" readonly></td></tr>
-      <tr><td>10</td><td><input id="m10" type="text"></td><td>11</td><td><input id="m11" type="text"></td><td>12</td><td><input id="m12" type="text"></td><td>4분기</td><td><input id="q4" type="text" readonly></td></tr>
-      <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="sum" type="text"></td></tr>  
+      <tr><td>01</td><td><input id="m1" type="text"></td><td>02</td><td><input id="m2" type="text"></td><td>03</td><td><input id="m3" type="text"></td><td>1분기</td><td><input id="q1" type="text" readonly/></td></tr>
+      <tr><td>04</td><td><input id="m4" type="text"></td><td>05</td><td><input id="m5" type="text"></td><td>06</td><td><input id="m6" type="text"></td><td>2분기</td><td><input id="q2" type="text" readonly/></td></tr>
+      <tr><td>07</td><td><input id="m7" type="text"></td><td>08</td><td><input id="m8" type="text"></td><td>09</td><td><input id="m9" type="text"></td><td>3분기</td><td><input id="q3" type="text" readonly/></td></tr>
+      <tr><td>10</td><td><input id="m10" type="text"></td><td>11</td><td><input id="m11" type="text"></td><td>12</td><td><input id="m12" type="text"></td><td>4분기</td><td><input id="q4" type="text" readonly/></td></tr>
+      <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="sum" type="text" READONLY></td></tr>
       </table>
       </small>
       </div>
