@@ -432,16 +432,7 @@ function showOrganizedBudget(){
         				q.disabled=false;
         				q.value=numToMoney(num+"");
         				num=0;
-
-        				var sum=document.querySelector("#sum");
-            			sum.disabled=false;
-            			var n1=eval(q1.value);
-            			var n2=eval(q2.value);
-            			var n3=eval(q3.value);
-            			var n4=eval(q4.value);
-            			
-            			sum.value=n1+n2+n3+n4;
-        			}	        		
+        			}
         		}        		
         	}
         }
@@ -515,6 +506,7 @@ function showDetailBudget(code){//우측 그리드	좌측 그리드에서 선택
 
 function qRefresh(){
 	var num=0;
+	var num1=0;
     for(var i=1; i<=12;i++){
     	var input=document.querySelector("#m"+i);//m1~m12
 		if(input.value == "") num += 0;
@@ -522,8 +514,11 @@ function qRefresh(){
     	if(i%3==0){//i에 3을나눠서 0일떄 즉 3,6,9,12일시
 			var q=document.querySelector("#q"+i/3);//분기1,2,3,4
 			q.value=numToMoney(num+"");//돈형식으로 만들어주는 함수에 전송
+			num1 += num
 			num=0;
 		}
+		var sum = document.querySelector("#sum");
+		sum.value=numToMoney(num1+"");
     }
 }
 
@@ -658,7 +653,7 @@ function checkMonetaryFormat(){
       <tr><td>04</td><td><input id="m4" type="text"></td><td>05</td><td><input id="m5" type="text"></td><td>06</td><td><input id="m6" type="text"></td><td>2분기</td><td><input id="q2" type="text" readonly/></td></tr>
       <tr><td>07</td><td><input id="m7" type="text"></td><td>08</td><td><input id="m8" type="text"></td><td>09</td><td><input id="m9" type="text"></td><td>3분기</td><td><input id="q3" type="text" readonly/></td></tr>
       <tr><td>10</td><td><input id="m10" type="text"></td><td>11</td><td><input id="m11" type="text"></td><td>12</td><td><input id="m12" type="text"></td><td>4분기</td><td><input id="q4" type="text" readonly/></td></tr>
-      <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="sum" type="text"></td></tr>  
+      <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="sum" type="text" READONLY></td></tr>
       </table>
       </small>
       </div>
