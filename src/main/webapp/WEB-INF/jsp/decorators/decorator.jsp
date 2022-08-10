@@ -192,6 +192,7 @@
                     <a id="ME006_1" class="collapse-item ApplyBudget" href="#">예산신청</a>
                     <a id="ME006_2" class="collapse-item PlanBudget" href="#">예산편성</a>
                     <a id="ME006_3" class="collapse-item ManageBudget" href="#">예산실적현황</a>
+                    <a id="ME006_4" class="collapse-item ManageBudget" href="#">예실비교현황</a>
                 </div>
             </div></li>
 
@@ -323,6 +324,7 @@
                                 <a id="ME006_1" class="dropdown-item ApplyBudget" href="#">예산신청</a>
                                 <a id="ME006_2" class="dropdown-item PlanBudget" href="#">예산편성</a>
                                 <a id="ME006_3" class="dropdown-item ManageBudget" href="#">예산실적현황</a>
+                                <a id="ME006_4" class="dropdown-item ManageBudget" href="#">예실비교현황</a>
                             </div></li>
 
                         <li class="nav-item dropdown"><a

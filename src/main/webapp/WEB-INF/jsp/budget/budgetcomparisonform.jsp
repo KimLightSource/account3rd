@@ -236,9 +236,9 @@
         function createParentBudget(){
             rowData=[];
             var columnDefs = [
-                {headerName: "예산코드", field: "budgetInnerCode",sort:"asc", width:150
+                {headerName: "계정코드", field: "accountInnerCode",sort:"asc", width:150
                 },
-                {headerName: "예산과목명", field: "budgetAccountName",width:250},
+                {headerName: "계정과목명", field: "accountName",width:250},
             ];
             gridOptions = {
                 columnDefs: columnDefs,
@@ -277,6 +277,11 @@
                 }
             });
 
+        }
+
+        function checkElement(){//회계연도,사업장,부서가 다입력되어있을시 왼쪽 그리드를 호출하는 로직
+            if($("#fiscalYear").val()&&$("#workplace").val()&&$("#dept").val())
+                showParentBudget();//왼쪽 그리드
         }
 
         function createBudgetComparison(){

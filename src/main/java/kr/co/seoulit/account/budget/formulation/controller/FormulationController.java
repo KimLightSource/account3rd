@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import kr.co.seoulit.account.sys.common.exception.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -53,18 +54,7 @@ public class FormulationController {
         JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
         BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
         map = new ModelMap();
-//		 try {
         map = formulationService.registerBudget(budgetBean);
-//			 map.put("errorCode", 1);
-//			 map.put("errorMsg", "성공!");
-//		 }catch (DuplicateKeyException e){
-//			 map.put("errorCode", -2);
-//			 map.put("exceptionClass", e.getClass());
-//		 }
-//		 catch (Exception e) {
-//			 map.put("errorCode", -1);
-//			 map.put("exceptionClass", e.getClass());
-//		 }
         return map;
 
     }
