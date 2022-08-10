@@ -59,5 +59,9 @@ public interface BaseService {
 
 	public void updateLookup(String id);
 
+	public void insertBoard(BoardBean boardbean);
+
+	public void boardModify(BoardBean boardbean);
+
 
 }
