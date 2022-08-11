@@ -3,21 +3,21 @@ package kr.co.seoulit.account.settlement.financialstatements.to;
 import kr.co.seoulit.account.sys.base.to.BaseBean;
 
 public class FinancialPositionBean extends BaseBean {
-    private int lev;
+    private long lev;
     private String category;
     private String accountName;
     private String accountCode;
-    private int balanceDetail;
-    private int balanceSummary;
-    private int preBalanceDetail;
-    private int preBalanceSummary;
-    private int isThisYear;
+    private long balanceDetail;
+    private long balanceSummary;
+    private long preBalanceDetail;
+    private long preBalanceSummary;
+    private long isThisYear;
 
-    public int getLev() {
+    public long getLev() {
         return lev;
     }
 
-    public void setLev(int lev) {
+    public void setLev(long lev) {
         this.lev = lev;
     }
 
@@ -45,43 +45,43 @@ public class FinancialPositionBean extends BaseBean {
         this.accountCode = accountCode;
     }
 
-    public int getBalanceDetail() {
+    public long getBalanceDetail() {
         return balanceDetail;
     }
 
-    public void setBalanceDetail(int balanceDetail) {
+    public void setBalanceDetail(long balanceDetail) {
         this.balanceDetail = balanceDetail;
     }
 
-    public int getBalanceSummary() {
+    public long getBalanceSummary() {
         return balanceSummary;
     }
 
-    public void setBalanceSummary(int balanceSummary) {
+    public void setBalanceSummary(long balanceSummary) {
         this.balanceSummary = balanceSummary;
     }
 
-    public int getPreBalanceDetail() {
+    public long getPreBalanceDetail() {
         return preBalanceDetail;
     }
 
-    public void setPreBalanceDetail(int preBalanceDetail) {
+    public void setPreBalanceDetail(long preBalanceDetail) {
         this.preBalanceDetail = preBalanceDetail;
     }
 
-    public int getPreBalanceSummary() {
+    public long getPreBalanceSummary() {
         return preBalanceSummary;
     }
 
-    public void setPreBalanceSummary(int preBalanceSummary) {
+    public void setPreBalanceSummary(long preBalanceSummary) {
         this.preBalanceSummary = preBalanceSummary;
     }
 
-    public int getIsThisYear() {
+    public long getIsThisYear() {
         return isThisYear;
     }
 
-    public void setIsThisYear(int isThisYear) {
+    public void setIsThisYear(long isThisYear) {
         this.isThisYear = isThisYear;
     }
 }

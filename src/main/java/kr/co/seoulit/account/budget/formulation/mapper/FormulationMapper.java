@@ -17,7 +17,7 @@ public interface FormulationMapper {
 	
 	public ArrayList<BudgetBean>  selectBudgetAppl(BudgetBean bean);
 	
-	public Vector<BudgetStatusBean> selectBudgetStatus(BudgetBean bean);
+	public ArrayList<BudgetStatusBean> selectBudgetStatus(BudgetBean bean);
 
 	public void insertBudget(BudgetBean bean);
 

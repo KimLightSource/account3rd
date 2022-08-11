@@ -2,17 +2,20 @@ package kr.co.seoulit.account.budget.formulation.to;
 
 import kr.co.seoulit.account.sys.base.to.BaseBean;
 
+import java.util.List;
+
 public class BudgetStatusBean extends BaseBean{
 private String accountInnerCode;
 private String accountName;
-private int annualBudgetRecord;//연간 예산 실적
-private int annualBudget;
-private int remainingBudget;
+private long annualBudgetRecord;//연간 예산 실적
+private long annualBudget;
+private long remainingBudget;
 private double budgetExecRatio;//집행률
-private int monthBudgetRecord;
-private int monthBudget;
-private int remainingMonthBudget;
+private long monthBudgetRecord;
+private long monthBudget;
+private long remainingMonthBudget;
 private double monthBudgetExecRatio;//집행률
+
 public String getAccountInnerCode() {
 	return accountInnerCode;
 }
@@ -25,22 +28,22 @@ public String getAccountName() {
 public void setAccountName(String accountName) {
 	this.accountName = accountName;
 }
-public int getAnnualBudgetRecord() {
+public long getAnnualBudgetRecord() {
 	return annualBudgetRecord;
 }
-public void setAnnualBudgetRecord(int annualBudgetRecord) {
+public void setAnnualBudgetRecord(long annualBudgetRecord) {
 	this.annualBudgetRecord = annualBudgetRecord;
 }
-public int getAnnualBudget() {
+public long getAnnualBudget() {
 	return annualBudget;
 }
-public void setAnnualBudget(int annualBudget) {
+public void setAnnualBudget(long annualBudget) {
 	this.annualBudget = annualBudget;
 }
-public int getRemainingBudget() {
+public long getRemainingBudget() {
 	return remainingBudget;
 }
-public void setRemainingBudget(int remainingBudget) {
+public void setRemainingBudget(long remainingBudget) {
 	this.remainingBudget = remainingBudget;
 }
 public double getBudgetExecRatio() {
@@ -49,22 +52,22 @@ public double getBudgetExecRatio() {
 public void setBudgetExecRatio(double budgetExecRatio) {
 	this.budgetExecRatio = budgetExecRatio;
 }
-public int getMonthBudgetRecord() {
+public long getMonthBudgetRecord() {
 	return monthBudgetRecord;
 }
-public void setMonthBudgetRecord(int monthBudgetRecord) {
+public void setMonthBudgetRecord(long monthBudgetRecord) {
 	this.monthBudgetRecord = monthBudgetRecord;
 }
-public int getMonthBudget() {
+public long getMonthBudget() {
 	return monthBudget;
 }
-public void setMonthBudget(int monthBudget) {
+public void setMonthBudget(long monthBudget) {
 	this.monthBudget = monthBudget;
 }
-public int getRemainingMonthBudget() {
+public long getRemainingMonthBudget() {
 	return remainingMonthBudget;
 }
-public void setRemainingMonthBudget(int remainingMonthBudget) {
+public void setRemainingMonthBudget(long remainingMonthBudget) {
 	this.remainingMonthBudget = remainingMonthBudget;
 }
 public double getMonthBudgetExecRatio() {

@@ -199,7 +199,7 @@
 		<parameter property="workplaceCode" jdbcType="VARCHAR" javaType="String" mode="IN" />
 		<parameter property="deptCode" jdbcType="VARCHAR" javaType="String" mode="IN" />
 		<parameter property="RESULT" jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT"
-				   resultMap="budgetStatusResult" />
+				   resultMap="budgetStatusBeanResult" />
 	</parameterMap>
 
 	<resultMap id="budgetStatusBeanResult" type="kr.co.seoulit.account.budget.formulation.to.BudgetStatusBean">

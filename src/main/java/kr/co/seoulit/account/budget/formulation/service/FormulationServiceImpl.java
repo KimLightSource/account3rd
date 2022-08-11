@@ -42,12 +42,12 @@ public class FormulationServiceImpl implements FormulationService {
 	}
 
 	@Override
-	public Vector<BudgetStatusBean> findBudgetStatus(BudgetBean bean) {
+	public ArrayList<BudgetStatusBean> findBudgetStatus(BudgetBean bean) {
 		// TODO Auto-generated method stub
 
-		Vector<BudgetStatusBean> beans = null;
-		beans = formulationDAO.selectBudgetStatus(bean);
-		
+		ArrayList<BudgetStatusBean> beans = null;
+		beans = (ArrayList<BudgetStatusBean>)formulationDAO.selectBudgetStatus(bean);
+		System.out.println("beans = " + beans);
 		return beans;
 	}
 

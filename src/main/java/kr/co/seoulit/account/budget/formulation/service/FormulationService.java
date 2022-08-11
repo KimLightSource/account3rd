@@ -15,7 +15,7 @@ public interface FormulationService {
 	
 	public ArrayList<BudgetBean> findBudgetAppl(BudgetBean bean);
 	
-	public Vector<BudgetStatusBean> findBudgetStatus(BudgetBean bean);
+	public ArrayList<BudgetStatusBean> findBudgetStatus(BudgetBean bean);
 
 	public ModelMap registerBudget(BudgetBean bean);
 

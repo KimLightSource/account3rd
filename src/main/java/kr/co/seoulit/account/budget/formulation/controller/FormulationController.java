@@ -80,11 +80,11 @@ public class FormulationController {
 
 
     @GetMapping("/budgetstatus")
-    public Vector<BudgetStatusBean> findBudgetStatus(@RequestParam String budgetObj) {
+    public ArrayList<BudgetStatusBean> findBudgetStatus(@RequestParam String budgetObj) {
 
         JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
         BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
-        Vector<BudgetStatusBean> beans = formulationService.findBudgetStatus(budgetBean);
+        ArrayList<BudgetStatusBean> beans = formulationService.findBudgetStatus(budgetBean);
 
         return beans;
     }
