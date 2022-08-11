@@ -337,7 +337,7 @@ function createDetailBudget() {
 function callBudgetStatus(){
 	
 	$.ajax({
-        type: "POST",
+        type: "GET",
         url: "${pageContext.request.contextPath}/budget/budgetstatus",
         data: {
             "budgetObj":JSON.stringify(dataSet)
@@ -345,8 +345,8 @@ function callBudgetStatus(){
         dataType: "json",
         async:false,
         success: function (jsonObj) {
-        	console.log("callBudgetStatus: ",dataSet);
         	console.log(jsonObj);
+        	console.log("callBudgetStatus: ",dataSet);
         	gridOptions.api.setRowData(jsonObj["budgetStatus"]);
         }
     });

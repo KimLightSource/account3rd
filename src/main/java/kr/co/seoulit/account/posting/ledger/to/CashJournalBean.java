@@ -6,8 +6,8 @@ public class CashJournalBean {
 	private String expenseReport;
 	private String customerCode;
 	private String customerName;
-	private int deposit;
-	private int withdrawal;
+	private long deposit;
+	private long withdrawal;
 	private String balance;
 	
 	public String getMonthReportingDate() {
@@ -40,16 +40,16 @@ public class CashJournalBean {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	public int getDeposit() {
+	public long getDeposit() {
 		return deposit;
 	}
-	public void setDeposit(int deposit) {
+	public void setDeposit(long deposit) {
 		this.deposit = deposit;
 	}
-	public int getWithdrawal() {
+	public long getWithdrawal() {
 		return withdrawal;
 	}
-	public void setWithdrawal(int withdrawal) {
+	public void setWithdrawal(long withdrawal) {
 		this.withdrawal = withdrawal;
 	}
 	public String getBalance() {

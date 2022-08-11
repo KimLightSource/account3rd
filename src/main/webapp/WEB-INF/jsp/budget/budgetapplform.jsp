@@ -387,9 +387,9 @@ function createDetailBudget() {
 
 function showOrganizedBudget(){
 	console.log(dataSet);
-	
+
 	console.log(JSON.stringify(dataSet));
-	
+
 	$.ajax({
         type: "POST",
         url: "${pageContext.request.contextPath}/budget/budgetappl",
@@ -399,8 +399,8 @@ function showOrganizedBudget(){
         dataType: "json",
         async:false,
         success: function (jsonObj){
-        	
-        	if(jsonObj.errorCode==-1){//에러코드일시 
+
+        	if(jsonObj.errorCode==-1){//에러코드일시
         		for(var i=1;i<=12;i++){
         			var input=document.querySelector("#m"+i);//m1~12
             		input.value=0;//넣는값 0
@@ -410,7 +410,7 @@ function showOrganizedBudget(){
             		}
         		}
         	}
-        	
+
         	console.log(jsonObj);
         	//console.log(jsonObj.budgetBean);
         	//console.log(jsonObj.budgetBean.m1Budget);
@@ -424,14 +424,14 @@ function showOrganizedBudget(){
         			var value=jsonObj.budgetBean["m"+i+"Budget"]+"";//numToMoney 함수 적용하기
         			input.value=numToMoney(value);//빈값 ""을 보내줌"
         			num+=jsonObj.budgetBean["m"+i+"Budget"];//num=1~12
-        				
+
         			if(i%3==0){
         				var q=document.querySelector("#q"+i/3);
         				q.disabled=false;
         				q.value=numToMoney(num+"");
         				num=0;
         			}
-        		}        		
+        		}
         	}
         }
     });
