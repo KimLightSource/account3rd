@@ -379,6 +379,8 @@ function createDetailBudget() {
 
 	    			  showOrganizedBudget();//출력되는 td행에 관함
 					  ableCurrentInput(); // 당기 예산 신청 인풋 텍스트 수정가능
+					  previousBudgetValueSet(); // 전기 예산신청 값 초기화 하기
+					  previousBudgetAppl(); // 전기 예산 신청 값 받아와서 담기
 	    		  }
 	   }
 	 accountDetailGrid = document.querySelector('#detailBudgetGrid');//id를 찾아 변수에담음
@@ -436,6 +438,57 @@ function showOrganizedBudget(){
         }
     });
 }
+function previousBudgetAppl(){
+	$.ajax({
+		type: "GET",
+		url: "${pageContext.request.contextPath}/budget/budget",
+		data: {
+			"method": "findBudget",
+			"budgetObj":JSON.stringify(dataSet),
+		},
+		dataType: "json",
+		async:false,
+		success: function (data){
+			document.querySelector("#h2Tag").innerHTML="";
+			inputPreviousBudgetAppl(data);
+		},
+		error: function(data){
+			document.querySelector("#h2Tag").innerHTML="전기에 신청한 해당 계정과목의 예산이 없습니다";
+		}
+	})
+}
+
+function previousBudgetValueSet() { // 전기 예산 신청 값들 초기화 하기
+	for(var i=1; i<=12;i++){   // 월 금액 초기화 하기
+		var input=document.querySelector("#c"+i);
+		input.value=null;
+	}
+	for(var a=1; a<=4; a++){   // 분기 금액 초기화 하기
+		var sum=document.querySelector("#t"+a);
+		sum.value=null;
+	}
+	document.querySelector("#total").value=null; // 합계 초기화 하기
+}
+
+function inputPreviousBudgetAppl(data){
+	var num=0;
+	var num1=0;
+	for(var i=1; i<=12;i++){
+		var input=document.querySelector("#c"+i);//m1~m12
+		input.value=data["m"+i+"Budget"]
+		if(input.value == "") num += 0;
+		else num+=parseInt(input.value.split(",").join(""));//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
+		if(i%3==0){//i에 3을나눠서 0일떄 즉 3,6,9,12일시
+			var t=document.querySelector("#t"+i/3);//분기1,2,3,4
+			t.value=numToMoney(num+"");//돈형식으로 만들어주는 함수에 전송
+			num1 += num
+			num=0;
+		}
+		var total = document.querySelector("#total");
+		total.value=numToMoney(num1+"");
+	}
+}
+
 
 function ableCurrentInput() {
 	for(var i=1; i<=12;i++){
@@ -625,20 +678,21 @@ function checkMonetaryFormat(){
     </div>
    </div>
 
-      <div style="width:100%;"><hr></div>
-      <h6>&nbsp;&nbsp;&nbsp;전기 예산 신청</h6>
-      <div class="row" align="left" style="width:100%; padding:10px;">
-      <small>
-      <table>
-      <tr><td>월</td><td>금액</td><td>월</td><td>금액</td><td>월</td><td>금액</td><td>분기</td><td>금액</td></tr>
-      <tr><td>01</td><td><input id="c1" type="text"></td><td>02</td><td><input id="c2" type="text"></td><td>03</td><td><input id="c3" type="text"></td><td>1분기</td><td><input id="c13" type="text" readonly></td></tr>
-      <tr><td>04</td><td><input id="c4" type="text"></td><td>05</td><td><input id="c5" type="text"></td><td>06</td><td><input id="c6" type="text"></td><td>2분기</td><td><input id="c14" type="text" readonly></td></tr>
-      <tr><td>07</td><td><input id="c7" type="text"></td><td>08</td><td><input id="c8" type="text"></td><td>09</td><td><input id="c9" type="text"></td><td>3분기</td><td><input id="c15" type="text" readonly></td></tr>
-      <tr><td>10</td><td><input id="c10" type="text"></td><td>11</td><td><input id="c11" type="text"></td><td>12</td><td><input id="c12" type="text"></td><td>4분기</td><td><input id="c16" type="text" readonly></td></tr>
-      <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="c17" type="text"></td></tr> 
-      </table>
-      </small>
-      </div>
+		  <div style="width:100%;"><hr></div>
+		  <h6>&nbsp;&nbsp;&nbsp;전기 예산 신청</h6>
+		  <div class="row" align="left" style="width:100%; padding:10px;">
+			  <small>
+				  <table>
+					  <tr><td>월</td><td>금액</td><td>월</td><td>금액</td><td>월</td><td>금액</td><td>분기</td><td>금액</td></tr>
+					  <tr><td>01</td><td><input id="c1" type="text" readonly></td><td>02</td><td><input id="c2" type="text" readonly></td><td>03</td><td><input id="c3" type="text" readonly></td><td>1분기</td><td><input id="t1" type="text" readonly></td></tr>
+					  <tr><td>04</td><td><input id="c4" type="text" readonly></td><td>05</td><td><input id="c5" type="text" readonly></td><td>06</td><td><input id="c6" type="text" readonly></td><td>2분기</td><td><input id="t2" type="text" readonly></td></tr>
+					  <tr><td>07</td><td><input id="c7" type="text" readonly></td><td>08</td><td><input id="c8" type="text" readonly></td><td>09</td><td><input id="c9" type="text" readonly></td><td>3분기</td><td><input id="t3" type="text" readonly></td></tr>
+					  <tr><td>10</td><td><input id="c10" type="text" readonly></td><td>11</td><td><input id="c11" type="text" readonly></td><td>12</td><td><input id="c12" type="text" readonly></td><td>4분기</td><td><input id="t4" type="text" readonly></td></tr>
+					  <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="total" type="text" readonly></td></tr>
+				  </table>
+			  </small>
+			  <h4 id="h2Tag"></h4>
+		  </div>
 	
 	
       <h6>&nbsp;&nbsp;&nbsp;당기 예산 신청</h6>

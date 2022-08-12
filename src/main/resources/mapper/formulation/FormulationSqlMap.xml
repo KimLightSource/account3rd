@@ -6,13 +6,25 @@
 
 
 	<select id="selectBudget" parameterType="kr.co.seoulit.account.budget.formulation.to.BudgetBean" resultMap="budgetBeanResult">
-		<![CDATA[
-		SELECT *
+      <![CDATA[
+		SELECT M1_BUDGET,
+			   M2_BUDGET,
+			   M3_BUDGET,
+			   M4_BUDGET,
+			   M5_BUDGET,
+			   M6_BUDGET,
+			   M7_BUDGET,
+			   M8_BUDGET,
+			   M9_BUDGET,
+			   M10_BUDGET,
+			   M11_BUDGET,
+			   M12_BUDGET
 		FROM BUDGET
 		where DEPT_CODE= #{deptCode}
 		  and WORKPLACE_CODE= #{workplaceCode}
+		  and ACCOUNT_PERIOD_NO in (select to_number(#{accountPeriodNo})-1 from BUDGET)
 		  and ACCOUNT_INNER_CODE= #{accountInnerCode}
-		  and BUDGETING_CODE= #{budgetingCode}
+		  and BUDGETING_CODE= 1
 		]]>
     </select>
 
