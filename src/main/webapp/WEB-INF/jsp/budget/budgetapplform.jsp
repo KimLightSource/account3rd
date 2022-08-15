@@ -66,10 +66,14 @@ $(document).ready(function () {
     createParentBudget();//그리드생성 계정과목코드,계정과목
     createDetailBudget(); //그리드생성 ParentBudget눌렀을때의 계정과목코드,계정과목
 
-    for(var i=1; i<=17; i++){
+    for(var i=1; i<=12; i++){  //전기 예산 신청 input disabled
     	var input=document.querySelector("#c"+i);
     	input.disabled=true;
     }
+	for(var i=1; i<=4; i++){  //전기 예산 신청 합계 input disabled
+		var input=document.querySelector("#t"+i);
+		input.disabled=true;
+	}
     //input에 이벤트 달기
     for(var i=1; i<=12;i++){
     	var input=document.querySelector("#m"+i);	//td1번~12번
@@ -86,6 +90,8 @@ $(document).ready(function () {
 
 		q.disabled=true;
     }
+	var total=document.querySelector("#total");
+	total.disabled=true;
 
     var sum=document.querySelector("#sum");
     sum.disabled=true;
@@ -377,10 +383,12 @@ function createDetailBudget() {
 
 	    			  dataSet["accountInnerCode"]=selectedRow["accountInnerCode"];//dataSet의 accountInnerCode가 내가 선택한 행의 값으로 변경
 
+
 	    			  showOrganizedBudget();//출력되는 td행에 관함
 					  ableCurrentInput(); // 당기 예산 신청 인풋 텍스트 수정가능
-					  previousBudgetAppl();
 					  previousBudgetValueSet();
+					  previousBudgetAppl();
+
 	    		  }
 	   }
 	 accountDetailGrid = document.querySelector('#detailBudgetGrid');//id를 찾아 변수에담음
@@ -399,6 +407,7 @@ function previousBudgetAppl(){
 		dataType: "json",
 		async:false,
 		success: function (data){
+			console.log(data)
 			document.querySelector("#h2Tag").innerHTML="";
 			inputPreviousBudgetAppl(data);
 		},
@@ -425,6 +434,7 @@ function inputPreviousBudgetAppl(data){ // 전기 예산 신청 값 불러와 �
 	var num1=0;
 	for(var i=1; i<=12;i++){
 		var input=document.querySelector("#c"+i);
+		input.value=data["m"+i+"Budget"];
 		if(input.value == "") num += 0;
 		else num+=parseInt(input.value.split(",").join(""));//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
 		if(i%3==0){//i에 3을나눠서 0일떄 즉 3,6,9,12일시
@@ -684,11 +694,11 @@ function checkMonetaryFormat(){
       <small>
       <table>
       <tr><td>월</td><td>금액</td><td>월</td><td>금액</td><td>월</td><td>금액</td><td>분기</td><td>금액</td></tr>
-      <tr><td>01</td><td><input id="c1" type="text"></td><td>02</td><td><input id="c2" type="text"></td><td>03</td><td><input id="c3" type="text"></td><td>1분기</td><td><input id="c13" type="text" readonly></td></tr>
-      <tr><td>04</td><td><input id="c4" type="text"></td><td>05</td><td><input id="c5" type="text"></td><td>06</td><td><input id="c6" type="text"></td><td>2분기</td><td><input id="c14" type="text" readonly></td></tr>
-      <tr><td>07</td><td><input id="c7" type="text"></td><td>08</td><td><input id="c8" type="text"></td><td>09</td><td><input id="c9" type="text"></td><td>3분기</td><td><input id="c15" type="text" readonly></td></tr>
-      <tr><td>10</td><td><input id="c10" type="text"></td><td>11</td><td><input id="c11" type="text"></td><td>12</td><td><input id="c12" type="text"></td><td>4분기</td><td><input id="c16" type="text" readonly></td></tr>
-      <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="c17" type="text"></td></tr>
+      <tr><td>01</td><td><input id="c1" type="text"></td><td>02</td><td><input id="c2" type="text"></td><td>03</td><td><input id="c3" type="text"></td><td>1분기</td><td><input id="t1" type="text" readonly></td></tr>
+      <tr><td>04</td><td><input id="c4" type="text"></td><td>05</td><td><input id="c5" type="text"></td><td>06</td><td><input id="c6" type="text"></td><td>2분기</td><td><input id="t2" type="text" readonly></td></tr>
+      <tr><td>07</td><td><input id="c7" type="text"></td><td>08</td><td><input id="c8" type="text"></td><td>09</td><td><input id="c9" type="text"></td><td>3분기</td><td><input id="t3" type="text" readonly></td></tr>
+      <tr><td>10</td><td><input id="c10" type="text"></td><td>11</td><td><input id="c11" type="text"></td><td>12</td><td><input id="c12" type="text"></td><td>4분기</td><td><input id="t4" type="text" readonly></td></tr>
+      <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="total" type="text"></td></tr>
       </table>
       </small>
 		  <h4 id="h2Tag"></h4>
