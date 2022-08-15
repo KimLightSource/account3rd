@@ -4,6 +4,7 @@ import kr.co.seoulit.account.sys.base.to.BaseBean;
 
 import java.util.List;
 
+
 public class BudgetStatusBean extends BaseBean{
 private String accountInnerCode;
 private String accountName;

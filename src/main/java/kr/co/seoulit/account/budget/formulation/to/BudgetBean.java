@@ -25,18 +25,8 @@ public class BudgetBean extends BaseBean{
 	private long m10Budget;
 	private long m11Budget;
 	private long m12Budget;
-	private ArrayList<BudgetStatusBean> RESULT;
 
-	public void setResult(ArrayList<BudgetStatusBean> RESULT) {
-		this.RESULT = RESULT;
-	}
-
-	public ArrayList<BudgetStatusBean> getRESULT() {
-		return RESULT;
-	}
-
-	public String getDeptCode() {
-		return deptCode;}
+	public String getDeptCode() {return deptCode;}
 	public void setDeptCode(String deptCode) {
 		this.deptCode = deptCode;
 	}

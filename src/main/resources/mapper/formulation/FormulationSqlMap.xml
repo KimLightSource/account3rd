@@ -206,25 +206,15 @@
 
 
 	<!-- 외부parameter로 값을 던져주는거 -->
-	<parameterMap id="budgetStatusParams" type="java.util.HashMap" >   <!--원래 풀네임 오류시, 수정  -->
-		<parameter property="accountPeriodNo" jdbcType="VARCHAR" javaType="String" mode="IN" />
-		<parameter property="workplaceCode" jdbcType="VARCHAR" javaType="String" mode="IN" />
-		<parameter property="deptCode" jdbcType="VARCHAR" javaType="String" mode="IN" />
-		<parameter property="RESULT" jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT"
-				   resultMap="budgetStatusBeanResult" />
-	</parameterMap>
+<!--	<parameterMap id="budgetStatusParams" type="java.util.HashMap" >   &lt;!&ndash;원래 풀네임 오류시, 수정  &ndash;&gt;-->
+<!--		<parameter property="accountPeriodNo" jdbcType="VARCHAR" javaType="String" mode="IN" />-->
+<!--		<parameter property="workplaceCode" jdbcType="VARCHAR" javaType="String" mode="IN" />-->
+<!--		<parameter property="deptCode" jdbcType="VARCHAR" javaType="String" mode="IN" />-->
+<!--		<parameter property="RESULT" jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT"-->
+<!--				   resultMap="budgetStatusBeanResult" />-->
+<!--	</parameterMap>-->
 
 	<resultMap id="budgetStatusBeanResult" type="kr.co.seoulit.account.budget.formulation.to.BudgetStatusBean">
-		<result property="accountInnerCode" column="ACCOUNT_INNER_CODE"  />
-		<result property="accountName" column="ACCOUNT_NAME" />
-		<result property="annualBudgetRecord" column="ABR" />
-		<result property="annualBudget" column="ANNUALBUDGET"  />
-		<result property="remainingBudget" column="REMAINING_BUDGET"  />
-		<result property="budgetExecRatio" column="BUDGET_EXEC_RATE" />
-		<result property="monthBudgetRecord" column="AMBR"/>
-		<result property="monthBudget" column="BUDGET"  />
-		<result property="remainingMonthBudget" column="REMAINING_MONTH_BUDGET" />
-		<result property="monthBudgetExecRatio" column="MONTH_BUDGET_EXEC_RATE"  />
 	</resultMap>
 
 	<resultMap id="budgetBeanResult" type="kr.co.seoulit.account.budget.formulation.to.BudgetBean">
@@ -247,9 +237,13 @@
 		<result property="m12Budget" column="M12_BUDGET" />
 	</resultMap>
 
-	<select id="selectBudgetStatus" parameterMap="budgetStatusParams" statementType="CALLABLE">
+	<select id="selectBudgetStatus" statementType="CALLABLE" parameterType="kr.co.seoulit.account.budget.formulation.to.BudgetBean">
 		<![CDATA[
-		{call BUDGET_STATUS(?,?,?,?)}
+		{call BUDGET_STATUS(
+		    #{accountPeriodNo},
+		    #{workplaceCode},
+		    #{deptCode},
+		    #{budgetStatus, jdbcType=CURSOR, javaType=java.sql.ResultSet, mode=OUT, resultMap=budgetStatusBeanResult})}
 		]]>
 	</select>
 

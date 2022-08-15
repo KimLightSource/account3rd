@@ -1,6 +1,8 @@
 package kr.co.seoulit.account.budget.formulation.mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -17,7 +19,7 @@ public interface FormulationMapper {
 	
 	public ArrayList<BudgetBean>  selectBudgetAppl(BudgetBean bean);
 	
-	public ArrayList<BudgetStatusBean> selectBudgetStatus(BudgetBean bean);
+	public HashMap<String, Object> selectBudgetStatus(HashMap<String, Object> bean);
 
 	public void insertBudget(BudgetBean bean);
 

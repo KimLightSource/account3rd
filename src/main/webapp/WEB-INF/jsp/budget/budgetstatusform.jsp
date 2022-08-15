@@ -345,8 +345,7 @@ function callBudgetStatus(){
         dataType: "json",
         async:false,
         success: function (jsonObj) {
-        	console.log(jsonObj);
-        	console.log("callBudgetStatus: ",dataSet);
+        	console.log("callBudgetStatus: ",jsonObj);
         	gridOptions.api.setRowData(jsonObj["budgetStatus"]);
         }
     });
