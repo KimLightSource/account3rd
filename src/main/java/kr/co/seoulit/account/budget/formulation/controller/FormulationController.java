@@ -89,13 +89,13 @@ public class FormulationController {
         return beans;
     }
 
-    @RequestMapping(value = "/budgetappl", method = RequestMethod.POST)
+    @GetMapping("/budgetappl")
     public ArrayList<BudgetBean> findBudgetAppl(@RequestParam String budgetObj) {
 
 
         JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
         BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
 
-        return null;
+        return formulationService.findBudgetAppl(budgetBean);
     }
 }

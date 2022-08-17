@@ -148,8 +148,9 @@ var ApplBudget={
     		var input1=document.querySelector("#am"+i);
     		var input2=document.querySelector("#m"+i);
     		input2.value=input1.value;
+    		input2.disabled=false;
     	}
-    	for(var i=1; i<=3; i++){
+    	for(var i=1; i<=4; i++){
     		var input1=document.querySelector("#aq"+i);
     		var input2=document.querySelector("#q"+i);
     		input2.value=input1.value;
@@ -399,6 +400,7 @@ function createDetailBudget() {
 	    			  dataSet["accountInnerCode"]=selectedRow["accountInnerCode"];
 	    			  ApplBudget["accountInnerCode"]=selectedRow["accountInnerCode"];
 	    			  
+	    			  previousBudgetValueSet();
 	    			  showAppliedBudget();
 	    			  showOrganizedBudget();
 	    		  }
@@ -505,11 +507,29 @@ function showOrganizedBudget(){
     });
 }
 
+function previousBudgetValueSet() { // 신청예산, 편성예산 값들 초기화 하기
+	for(var i=1; i<=12;i++){   // 월 금액 초기화 하기
+		var input=document.querySelector("#am"+i);
+		var input1=document.querySelector("#m"+i);
+		input.value=null;
+		input1.value=null;
+		input1.disabled=true;
+	}
+	for(var a=1; a<=4; a++){   // 분기 금액 초기화 하기
+		var sum=document.querySelector("#aq"+a);
+		var sum1=document.querySelector("#q"+a);
+		sum.value=null;
+		sum1.value=null;
+		sum1.disabled=true;
+	}
+	document.querySelector("#sum").value=null; // 합계 초기화 하기
+	document.querySelector("#msum").value=null;
+}
 
 function showAppliedBudget(){
 
 	$.ajax({
-        type: "POST",
+        type: "GET",
         url: "${pageContext.request.contextPath}/budget/budgetappl",
         data: {
             "budgetObj":JSON.stringify(ApplBudget)
@@ -530,33 +550,30 @@ function showAppliedBudget(){
         	}
         	
         	console.log(jsonObj);
-        	//console.log(jsonObj.budgetBean);
-        	//console.log(jsonObj.budgetBean.m1Budget);
-        	//var json=JSON.parse(jsonObj.budgetBean);
         	
-        	var num=0;
-        	for(var i=1; i<=12;i++){
-        		var input=document.querySelector("#am"+i);
-        		if(jsonObj)
-        			if(jsonObj["m"+i+"Budget"]||jsonObj["m"+i+"Budget"]==0){
-        		var value=jsonObj["m"+i+"Budget"]+"";//numToMoney 함수 적용하기
-        		input.value=numToMoney(value);
-        		num+=jsonObj["m"+i+"Budget"];
-        		if(i%3==0){
-        			var q=document.querySelector("#aq"+i/3);
-        			q.value=numToMoney(num+"");
-        			num=0;
-					if(q.value!=0){
-	            		var total=document.querySelector("#sum");
-	            		total.value+=q.value;
-					}
-        		}	
-        		
-        		}
-        		
-        	}
+        	inputBudgetAppl(jsonObj);
         }
     });
+}
+
+function inputBudgetAppl(jsonObj){
+	
+		var num=0;
+		var num1=0;
+		for(var i=1; i<=12;i++){
+			var input=document.querySelector("#am"+i);
+			input.value=jsonObj[0]["m"+i+"Budget"];
+			if(input.value == "") num += 0;
+			else num+=parseInt(input.value.split(",").join(""));//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
+			if(i%3==0){//i에 3을나눠서 0일떄 즉 3,6,9,12일시
+				var t=document.querySelector("#aq"+i/3);//분기1,2,3,4
+				t.value=numToMoney(num+"");//돈형식으로 만들어주는 함수에 전송
+				num1 += num
+				num=0;
+			}
+		}
+	var total = document.querySelector("#sum");
+	total.value=numToMoney(num1+"");
 }
 
 function qRefresh(){

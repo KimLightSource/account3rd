@@ -6,13 +6,25 @@
 
 
 	<select id="selectBudget" parameterType="kr.co.seoulit.account.budget.formulation.to.BudgetBean" resultMap="budgetBeanResult">
-		<![CDATA[
-		SELECT *
+		      <![CDATA[
+		SELECT M1_BUDGET,
+			   M2_BUDGET,
+			   M3_BUDGET,
+			   M4_BUDGET,
+			   M5_BUDGET,
+			   M6_BUDGET,
+			   M7_BUDGET,
+			   M8_BUDGET,
+			   M9_BUDGET,
+			   M10_BUDGET,
+			   M11_BUDGET,
+			   M12_BUDGET
 		FROM BUDGET
 		where DEPT_CODE= #{deptCode}
 		  and WORKPLACE_CODE= #{workplaceCode}
+		  and ACCOUNT_PERIOD_NO in (select to_number(#{accountPeriodNo})-1 from BUDGET)
 		  and ACCOUNT_INNER_CODE= #{accountInnerCode}
-		  and BUDGETING_CODE= #{budgetingCode}
+		  and BUDGETING_CODE= 1
 		]]>
     </select>
 
@@ -199,7 +211,7 @@
 		<parameter property="workplaceCode" jdbcType="VARCHAR" javaType="String" mode="IN" />
 		<parameter property="deptCode" jdbcType="VARCHAR" javaType="String" mode="IN" />
 		<parameter property="RESULT" jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT"
-				   resultMap="budgetStatusResult" />
+				   resultMap="budgetStatusBeanResult" />
 	</parameterMap>
 
 	<resultMap id="budgetStatusBeanResult" type="kr.co.seoulit.account.budget.formulation.to.BudgetStatusBean">
@@ -245,25 +257,25 @@
 	<select id="selectBudgetAppl" parameterType="kr.co.seoulit.account.budget.formulation.to.BudgetBean" resultMap="budgetBeanResult">
 		<![CDATA[
 		SELECT
-			M1_BUDGET as m1Budget,
-			M2_BUDGET as m2Budget,
-			M3_BUDGET as m3Budget,
-			M4_BUDGET as m4Budget,
-			M5_BUDGET as m5Budget,
-			M6_BUDGET as m6Budget,
-			M7_BUDGET as m7Budget,
-			M8_BUDGET as m8Budget,
-			M9_BUDGET as m9Budget,
-			M10_BUDGET as m10Budget,
-			M11_BUDGET as m11Budget,
-			M12_BUDGET as m12Budget
+			M1_BUDGET,
+			M2_BUDGET,
+			M3_BUDGET,
+			M4_BUDGET,
+			M5_BUDGET,
+			M6_BUDGET,
+			M7_BUDGET,
+			M8_BUDGET,
+			M9_BUDGET,
+			M10_BUDGET,
+			M11_BUDGET,
+			M12_BUDGET
 
 		FROM BUDGET
 		where DEPT_CODE= #{deptCode}
 		  and WORKPLACE_CODE= #{workplaceCode}
 		  and ACCOUNT_INNER_CODE= #{accountInnerCode}
 		  and ACCOUNT_PERIOD_NO= #{accountPeriodNo}
-		  and BUDGETING_CODE= #{budgetingCode}
+		  and BUDGETING_CODE= 1
 		]]>
     </select>
 
