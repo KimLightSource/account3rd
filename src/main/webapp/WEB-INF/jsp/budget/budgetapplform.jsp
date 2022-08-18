@@ -399,9 +399,9 @@ function createDetailBudget() {
 function previousBudgetAppl(){
 	$.ajax({
 		type: "GET",
-		url: "${pageContext.request.contextPath}/budget/budget",
+		url: "${pageContext.request.contextPath}/budget/budgetorganization",
 		data: {
-			"method": "findBudget",
+			"method": "findBudgetorganization",
 			"budgetObj":JSON.stringify(dataSet),
 		},
 		dataType: "json",
@@ -449,21 +449,20 @@ function inputPreviousBudgetAppl(data){ // 전기 예산 신청 값 불러와 �
 }
 
 function showOrganizedBudget(){
-	console.log(dataSet);
 
 	console.log(JSON.stringify(dataSet));
 
 	$.ajax({
-        type: "POST",
+        type: "GET",
         url: "${pageContext.request.contextPath}/budget/budgetappl",
         data: {
             "budgetObj":JSON.stringify(dataSet)
         },//선택한 행의 데이터에서 부서번호 사업장코드 계정코드, 기수 전송
         dataType: "json",
         async:false,
-        success: function (jsonObj){
+        success: function (data){
 
-        	if(jsonObj.errorCode==-1){//에러코드일시
+        	if(data.errorCode==-1){//에러코드일시
         		for(var i=1;i<=12;i++){
         			var input=document.querySelector("#m"+i);//m1~12
             		input.value=0;//넣는값 0

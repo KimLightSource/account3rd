@@ -32,6 +32,12 @@ public class FormulationServiceImpl implements FormulationService {
 
 		return bean;
 	}
+	
+	public BudgetBean findBudgetorganization(BudgetBean bean) {
+		// TODO Auto-generated method stub
+
+		return  formulationDAO.selectBudgetorganization(bean);
+	}
 
 	@Override
 	public void findBudgetList(BudgetBean bean) {
@@ -52,11 +58,10 @@ public class FormulationServiceImpl implements FormulationService {
 	}
 
 	@Override
-	public ArrayList<BudgetBean> findBudgetAppl(BudgetBean bean) {
+	public BudgetBean findBudgetAppl(BudgetBean bean) {
 		// TODO Auto-generated method stub
-
-			return formulationDAO.selectBudgetAppl(bean);
-
+		
+		return formulationDAO.selectBudgetAppl(bean);
 	}
 
 	@Override

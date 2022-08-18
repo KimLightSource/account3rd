@@ -27,6 +27,29 @@
 		  and BUDGETING_CODE= 1
 		]]>
     </select>
+    
+    <select id="selectBudgetorganization" parameterType="kr.co.seoulit.account.budget.formulation.to.BudgetBean" resultMap="budgetBeanResult">
+		      <![CDATA[
+		SELECT M1_BUDGET,
+			   M2_BUDGET,
+			   M3_BUDGET,
+			   M4_BUDGET,
+			   M5_BUDGET,
+			   M6_BUDGET,
+			   M7_BUDGET,
+			   M8_BUDGET,
+			   M9_BUDGET,
+			   M10_BUDGET,
+			   M11_BUDGET,
+			   M12_BUDGET
+		FROM BUDGET
+		where DEPT_CODE= #{deptCode}
+		  and WORKPLACE_CODE= #{workplaceCode}
+		  and ACCOUNT_PERIOD_NO = #{accountPeriodNO} 
+		  and ACCOUNT_INNER_CODE= #{accountInnerCode}
+		  and BUDGETING_CODE= 2
+		]]>
+    </select>
 
 
 	<select id="selectBudgetList" parameterType="Map" resultMap="budgetBeanResult">
@@ -275,7 +298,7 @@
 		  and WORKPLACE_CODE= #{workplaceCode}
 		  and ACCOUNT_INNER_CODE= #{accountInnerCode}
 		  and ACCOUNT_PERIOD_NO= #{accountPeriodNo}
-		  and BUDGETING_CODE= 1
+		  and BUDGETING_CODE= 2
 		]]>
     </select>
 

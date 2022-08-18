@@ -74,7 +74,7 @@ $(document).ready(function () {
     	
     	var input=document.querySelector("#m"+i);
     	input.oninput=checkNum;
-    	input.onchange=qRefresh;
+    	input.onchange=valueRefresh;
     	input.disabled=true;
     }
     for(var i=1;i<=4;i++){
@@ -85,10 +85,9 @@ $(document).ready(function () {
 		q.disabled=true;
 		
     }
-    for(var i=1;i<=1;i++){
-    	var msum=document.querySelector("#msum");
-    	msum.disabled=true;
-    }
+    
+   	var msum=document.querySelector("#msum");
+    msum.disabled=true;
     
     for(var i=1;i<=4;i++){
     	var q=document.querySelector("#q"+i);
@@ -165,7 +164,6 @@ var ApplBudget={
 			var input=document.querySelector("#m"+i);
 			var inputInt=input.value.split(",").join("");
 			dataSet["m"+i+"Budget"]=parseInt(inputInt);
-			//dataSet["m"+i+"Budget"]=parseInt(input.value);
 			}
 		console.log(dataSet);
 		
@@ -179,12 +177,40 @@ var ApplBudget={
 	        async:false,
 	        success: function (jsonObj) {
 	        	console.log(jsonObj);
-	            
-	            var result=document.querySelector("#result");
-	            //result.value="편성 완료";
-	            alert("편성 완료");
+	        	if(jsonObj.errorCode == -2){
+	        		var answer = confirm("동일한 연도, 사업장, 부서, 계정과목의 예산 편성이 완료된 상태입니다" +
+		 			"해당 예산 편성을 조정하시겠습니까?")
+					if(answer) { //위의 confirm에서 확인을 누른경우
+						modifyBudgetList();
+					}
+	        	}else{
+	            	alert("편성 완료");
+	        	}
 	        }
 	    });
+	}
+	
+	function modifyBudgetList() { // 예산 신청에서 PK값이 중복되는 예산편성데이터가 있을경우, 해당 메서드 실행
+		$.ajax({
+			type: "PUT",
+			url: "${pageContext.request.contextPath}/budget/budgetlist",
+			data: {
+				"budgetObj":JSON.stringify(dataSet)
+			},
+			dataType: "json",
+			async:false,
+			success: function (data) {
+				console.log(data);
+				if(data.errorCode == -1){
+					console.log(data)
+					alert("서버 오류");
+				}
+				else {
+					console.log(data)
+					alert("편성 완료");
+				}
+			}
+		});
 	}
 
 function createAccountPeriod(){//회계연도
@@ -401,8 +427,8 @@ function createDetailBudget() {
 	    			  ApplBudget["accountInnerCode"]=selectedRow["accountInnerCode"];
 	    			  
 	    			  previousBudgetValueSet();
-	    			  showAppliedBudget();
-	    			  showOrganizedBudget();
+	    			  showAppliedBudget();//신청 예산
+	    			  showOrganizedBudget();//편성 예산
 	    		  }
 	   }
 	 accountDetailGrid = document.querySelector('#detailBudgetGrid');
@@ -453,8 +479,8 @@ function checkElement(){
 function showOrganizedBudget(){
 
 	$.ajax({
-        type: "POST",
-        url: "${pageContext.request.contextPath}/budget/budget",
+        type: "GET",
+        url: "${pageContext.request.contextPath}/budget/budgetorganization",
         data: {
             "budgetObj":JSON.stringify(dataSet)
         },
@@ -536,9 +562,9 @@ function showAppliedBudget(){
         },
         dataType: "json",
         async:false,
-        success: function (jsonObj) {
+        success: function (jsonObject){
         	
-        	if(jsonObj.errorCode==-1){
+        	if(jsonObject.errorCode==-1){
         		for(var i=1;i<=12;i++){
         			var input=document.querySelector("#am"+i);
             		input.value=0;
@@ -549,48 +575,58 @@ function showAppliedBudget(){
         		}
         	}
         	
-        	console.log(jsonObj);
+        	console.log(jsonObject);
         	
-        	inputBudgetAppl(jsonObj);
+        	inputBudgetAppl(jsonObject);
         }
     });
 }
 
 function inputBudgetAppl(jsonObj){
 	
+		if(jsonObj==null){
+			alert("신청된 예산이 없습니다.");
+		}else{
 		var num=0;
 		var num1=0;
 		for(var i=1; i<=12;i++){
 			var input=document.querySelector("#am"+i);
-			input.value=jsonObj[0]["m"+i+"Budget"];
+			input.value=jsonObj["m"+i+"Budget"];
 			if(input.value == "") num += 0;
 			else num+=parseInt(input.value.split(",").join(""));//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
 			if(i%3==0){//i에 3을나눠서 0일떄 즉 3,6,9,12일시
-				var t=document.querySelector("#aq"+i/3);//분기1,2,3,4
-				t.value=numToMoney(num+"");//돈형식으로 만들어주는 함수에 전송
+				var aq=document.querySelector("#aq"+i/3);//분기1,2,3,4
+				aq.value=numToMoney(num+"");//돈형식으로 만들어주는 함수에 전송
 				num1 += num
 				num=0;
 			}
 		}
-	var total = document.querySelector("#sum");
-	total.value=numToMoney(num1+"");
+	var sum = document.querySelector("#sum");
+	sum.value=numToMoney(num1+"");
+	}
+	
 }
 
-function qRefresh(){
+function valueRefresh(){
 	var num=0;
+	var msum=0;
     for(var i=1; i<=12;i++){
     	var input=document.querySelector("#m"+i);
+    	dataSet["m"+i+"Budget"]=input.value;
     	num+=parseInt(input.value.split(",").join(""));
+    	msum+=parseInt(num);
     	if(i%3==0){
 			var q=document.querySelector("#q"+i/3);
 			q.value=numToMoney(num+"");
 			num=0;
 		}
     }
+    msum=String(msum);
+    console.log(msum);
+   	document.querySelector("#msum").value=numToMoney(msum);
 }
 
 function checkNum(){
-	console.log("AAAAAAAAAAAAA");
 	this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/(^0+)/, "");
     var length=this.value.length;
     var value=this.value.split("");
@@ -600,9 +636,9 @@ function checkNum(){
         if((i-3)%3==0&&i!=0) strBuffer.unshift(",");
         strBuffer.unshift(value[length-1-i]);
     }
-this.value=strBuffer.join("");
-console.log("checkNum: "+this.value);
-	        }
+	this.value=strBuffer.join("");
+	console.log("checkNum: "+this.value);
+ }
 	    
 	    
 //숫자를 돈 형식으로 바꿔주는 함수
