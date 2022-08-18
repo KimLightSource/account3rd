@@ -89,6 +89,18 @@ public class AccountSubjectController {
       
         return parentBudgetList;
     }
+
+    @GetMapping("/parentbudgetlist2")
+    public ArrayList<AccountBean> findParentBudgetList2(@RequestParam String workplaceCode,
+                                                        @RequestParam String deptCode,
+                                                        @RequestParam String accountPeriodNo) {
+        System.out.println("workplaceCode:" +workplaceCode);
+        System.out.println("deptCode:" +deptCode);
+        ArrayList<AccountBean> parentBudgetList = systemService.findParentBudgetList2(workplaceCode,deptCode,accountPeriodNo);
+
+        return parentBudgetList;
+    }
+
     @GetMapping("/accountperiodlist")
     public ArrayList<PeriodBean> findAccountPeriodList() {
      

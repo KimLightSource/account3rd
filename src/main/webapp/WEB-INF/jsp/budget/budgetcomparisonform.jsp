@@ -73,6 +73,27 @@
 
         });
 
+        var dataSet={
+            "deptCode":"",
+            "workplaceCode":"",
+            "accountInnerCode":"",
+            "accountPeriodNo":"",
+            "fiscalYear":"",
+            "budgetingCode":"1",
+            "m1Budget":"",
+            "m2Budget":"",
+            "m3Budget":"",
+            "m4Budget":"",
+            "m5Budget":"",
+            "m6Budget":"",
+            "m7Budget":"",
+            "m8Budget":"",
+            "m9Budget":"",
+            "m10Budget":"",
+            "m11Budget":"",
+            "m12Budget":""
+        };
+
         function createAccountPeriod(){//회계연도
             rowData=[];
             var columnDefs = [
@@ -95,13 +116,16 @@
                 },
                 onRowClicked:function (event){//클릭시
                     console.log("Row선택");
+                    console.log(event.data);
                     selectedRow=event.data;//이벤트가 일어난 행의 정보
                     $("#fiscalYear").val(selectedRow["fiscalYear"]);//선택한 행의 연도
                     $("#accountYearModal").modal("hide");//모달창을 하이드시킴
+                    dataSet["fiscalYear"]=selectedRow["fiscalYear"];
                     checkElement();//호출
                     console.log("dataSet"+dataSet["accountPeriodNo"]);
                     console.log("selectedRow"+selectedRow["accountPeriodNo"]);
                     dataSet["accountPeriodNo"]=selectedRow["accountPeriodNo"];//내가 선택한 연도
+
                 }
             }
             accountGrid = document.querySelector('#accountYearGrid');
@@ -191,10 +215,12 @@
                     $("#workplace").val(selectedRow["workplaceName"]);//선택한 사업장명
                     $("#dept").val(selectedRow["deptName"]);//선택한 부서명
                     $("#workplaceModal").modal("hide");//모달창 닫힘
-                    checkElement();//회계연도,사업장,부서 모두 클릭 했는지 여부
                     console.log(selectedRow["deptName"])
                     dataSet["workplaceCode"]=selectedRow["workplaceCode"];//dataSet에 내가선택한 사업장이 담김
                     dataSet["deptCode"]=selectedRow["deptCode"];//dataset에 내가 선택한 부서번호가 담김
+                    console.log(dataSet["workplaceCode"]);
+                    console.log(dataSet["deptCode"]);
+                    checkElement();//회계연도,사업장,부서 모두 클릭 했는지 여부
                 }
             }
             deptGrid = document.querySelector('#deptGrid');
@@ -234,6 +260,7 @@
         }
 
         function createParentBudget(){
+
             rowData=[];
             var columnDefs = [
                 {headerName: "계정코드", field: "accountInnerCode",sort:"asc", width:150
@@ -266,9 +293,12 @@
 
             $.ajax({
                 type: "GET",
-                url: "${pageContext.request.contextPath}/operate/parentbudgetlist",
-                data: {
-                },
+                url: "${pageContext.request.contextPath}/operate/parentbudgetlist2",
+                    data: {
+                        "workplaceCode":dataSet["workplaceCode"],
+                        "deptCode":dataSet["deptCode"],
+                        "accountPeriodNo":dataSet["accountPeriodNo"]
+                    },
                 dataType: "json",
                 async:false,
                 success: function (jsonObj) {
@@ -280,8 +310,11 @@
         }
 
         function checkElement(){//회계연도,사업장,부서가 다입력되어있을시 왼쪽 그리드를 호출하는 로직
-            if($("#fiscalYear").val()&&$("#workplace").val()&&$("#dept").val())
-                showParentBudget();//왼쪽 그리드
+            if($("#fiscalYear").val()&&$("#workplace").val()&&$("#dept").val()){
+                console.log("dataSet"+JSON.stringify(dataSet));
+                console.log("dataSet1"+dataSet["workplaceCode"]);
+                console.log("dataSet2"+dataSet["deptCode"]);
+                showParentBudget();}//왼쪽 그리드
         }
 
         function createBudgetComparison(){

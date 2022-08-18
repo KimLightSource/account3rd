@@ -105,6 +105,16 @@ public class SystemServiceImpl implements SystemService{
 	}
 
 	@Override
+	public ArrayList<AccountBean> findParentBudgetList2(String workplaceCode,String deptCode, String accountPeriodNo) {
+		// TODO Auto-generated method stub
+
+		ArrayList<AccountBean> parentBudgetList = null;
+		parentBudgetList = accountDAO.selectParentBudgetList2(workplaceCode,deptCode,accountPeriodNo);
+
+		return parentBudgetList;
+	}
+
+	@Override
 	public ArrayList<PeriodBean> findAccountPeriodList() {
 		// TODO Auto-generated method stub
 

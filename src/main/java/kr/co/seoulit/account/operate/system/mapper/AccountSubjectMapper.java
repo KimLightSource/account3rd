@@ -28,4 +28,6 @@ public interface AccountSubjectMapper {
     public ArrayList<AccountBean> selectParentBudgetList();
     
     public ArrayList<PeriodBean> selectAccountPeriodList();
+
+    ArrayList<AccountBean> selectParentBudgetList2(String workplaceCode, String deptCode, String accountPeriodNo);
 }

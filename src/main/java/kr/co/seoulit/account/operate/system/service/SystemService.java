@@ -1,7 +1,6 @@
 package kr.co.seoulit.account.operate.system.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import kr.co.seoulit.account.operate.system.to.AccountBean;
 import kr.co.seoulit.account.operate.system.to.AccountControlBean;
@@ -61,4 +60,6 @@ public interface SystemService {
 	public void modifyApprovalStatus(ArrayList<String> getCodes,String status); //�궗�뾽�옣 �듅�씤�긽�깭 �뾽�뜲�씠�듃
 		
 	public ArrayList<WorkplaceBean> findAllWorkplaceList(); //紐⑤뱺�궗�뾽�옣議고쉶
+
+    ArrayList<AccountBean> findParentBudgetList2(String workplaceCode, String deptCode,String accountPeriodNo);
 }
