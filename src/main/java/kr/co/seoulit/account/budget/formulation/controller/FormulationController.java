@@ -1,6 +1,9 @@
 package kr.co.seoulit.account.budget.formulation.controller;
 
+import java.io.Console;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import kr.co.seoulit.account.sys.common.exception.DataAccessException;
@@ -80,13 +83,17 @@ public class FormulationController {
 
 
     @GetMapping("/budgetstatus")
-    public ArrayList<BudgetStatusBean> findBudgetStatus(@RequestParam String budgetObj) {
+    public HashMap<String, Object> findBudgetStatus(@RequestParam String budgetObj) {
 
+        HashMap<String, Object> params = new HashMap<>();
         JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
         BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
-        ArrayList<BudgetStatusBean> beans = formulationService.findBudgetStatus(budgetBean);
+        params.put("accountPeriodNo", budgetBean.getAccountPeriodNo());
+        params.put("deptCode", budgetBean.getDeptCode());
+        params.put("workplaceCode", budgetBean.getWorkplaceCode());
+        formulationService.findBudgetStatus(params);
 
-        return beans;
+        return params;
     }
 
     @RequestMapping(value = "/budgetappl", method = RequestMethod.POST)
