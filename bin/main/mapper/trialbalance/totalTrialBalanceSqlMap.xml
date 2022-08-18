@@ -26,7 +26,7 @@
 	<parameterMap id="totalTrialBalanceParams" type="java.util.HashMap">
 		<parameter property="accountPeriodNo" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
 		<parameter property="callResult" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
-		<parameter property="errorCode" jdbcType="DECIMAL" javaType="int" mode="OUT"/>
+		<parameter property="errorCode" jdbcType="DECIMAL" javaType="long" mode="OUT"/>
 		<parameter property="errorMsg" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT"/>
 		<parameter property="totalTrialBalance" jdbcType="CURSOR" javaType="java.sql.ResultSet"  mode="OUT"
 				   resultMap="totalTrialBalanceResult"/>
@@ -44,7 +44,7 @@
 	 <parameterMap id="earlyStatementsParams" type="java.util.HashMap">
 		<parameter property="accountPeriodNo" jdbcType="VARCHAR" javaType="String" mode="IN"/>
 		<parameter property="callResult" jdbcType="VARCHAR" javaType="String" mode="IN"/>
-		<parameter property="errorCode" jdbcType="DECIMAL" javaType="int" mode="OUT"/>
+		<parameter property="errorCode" jdbcType="DECIMAL" javaType="long" mode="OUT"/>
 		<parameter property="errorMsg" jdbcType="VARCHAR" javaType="String" mode="OUT"/>
 		<parameter property="accountingSettlementStatus" jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT"
 				   resultMap="accountingSettlementStatusResult"/>

@@ -1,6 +1,8 @@
 package kr.co.seoulit.account.budget.formulation.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import kr.co.seoulit.account.budget.formulation.to.BudgetBean;
@@ -15,7 +17,7 @@ public interface FormulationService {
 	
 	public ArrayList<BudgetBean> findBudgetAppl(BudgetBean bean);
 	
-	public Vector<BudgetStatusBean> findBudgetStatus(BudgetBean bean);
+	public HashMap<String, Object> findBudgetStatus(HashMap<String, Object> bean);
 
 	public ModelMap registerBudget(BudgetBean bean);
 

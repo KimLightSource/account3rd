@@ -1,8 +1,7 @@
 package kr.co.seoulit.account.budget.formulation.service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,7 +21,6 @@ public class FormulationServiceImpl implements FormulationService {
 	@Autowired
 	private FormulationMapper formulationDAO;
 
-	ModelMap map = null;
 
 	@Override
 	public BudgetBean findBudget(BudgetBean bean) {
@@ -42,13 +40,15 @@ public class FormulationServiceImpl implements FormulationService {
 	}
 
 	@Override
-	public Vector<BudgetStatusBean> findBudgetStatus(BudgetBean bean) {
+	public HashMap<String, Object> findBudgetStatus(HashMap<String, Object> params) {
 		// TODO Auto-generated method stub
-
-		Vector<BudgetStatusBean> beans = null;
-		beans = formulationDAO.selectBudgetStatus(bean);
-		
-		return beans;
+//		HashMap<String, Object> map = new HashMap();
+//		System.out.println("AccountPeriodNo = " + bean.getAccountPeriodNo());
+//		System.out.println("WorkplaceCode = " + bean.getWorkplaceCode());
+//		System.out.println("DeptCode = " + bean.getDeptCode());
+		HashMap<String, Object> budgetStatus = formulationDAO.selectBudgetStatus(params);
+		System.out.println("budgetStatus = " + budgetStatus );
+		return budgetStatus;
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class FormulationServiceImpl implements FormulationService {
 
 	@Override
 	public ModelMap registerBudget(BudgetBean bean) {
-		map = new ModelMap();
+		ModelMap map = new ModelMap();
 		try{
 		formulationDAO.insertBudget(bean);
 		map.put("errorCode", 1);
@@ -80,7 +80,7 @@ public class FormulationServiceImpl implements FormulationService {
 
 	@Override
 	public ModelMap modifyBudget(BudgetBean bean) {
-		map = new ModelMap();
+		ModelMap map = new ModelMap();
 		try{
 			formulationDAO.updateBudget(bean);
 			map.put("errorCode", 1);

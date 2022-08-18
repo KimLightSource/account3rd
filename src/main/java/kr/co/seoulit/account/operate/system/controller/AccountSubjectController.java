@@ -77,7 +77,7 @@ public class AccountSubjectController {
     @GetMapping("/detailbudgetlist")
     public ArrayList<AccountBean> findDetailBudgetList(@RequestParam String code) {
    
-            ArrayList<AccountBean> budgetList = systemService.findDetailBudgetList(code);
+        ArrayList<AccountBean> budgetList = systemService.findDetailBudgetList(code);
            
         return budgetList;
     }

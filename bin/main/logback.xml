@@ -10,11 +10,11 @@
 
   <appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
    <smtpHost>smtp.naver.com</smtpHost>
-   <smtpPort>587</smtpPort>
-   <username>fbwlstjd123</username>  <!-- smtp 설정한 계정 -->
-   <password>13wlstjd%#</password>
-   <to>fbwlstjd123@naver.com</to>  <!-- 받는사람 -->n
-   <from>fbwlstjd123@naver.com</from><!-- 보내는 사람 -->
+   <smtpPort>465</smtpPort>
+   <username>rhkddnjs9741</username>  <!-- smtp 설정한 계정 -->
+   <password>1606989abAB_</password>
+   <to>rhkddnjs9741@naver.com</to>  <!-- 받는사람 -->
+   <from>rhkddnjs9741@naver.com</from><!-- 보내는 사람 -->
    <subject>TESTING: %logger{20} - %m</subject>
    
    <layout class="ch.qos.logback.classic.html.HTMLLayout"/>  <!-- 출력포멧 -->
@@ -25,7 +25,7 @@
    </cyclicBufferTracker>
    <asynchronousSending>false</asynchronousSending>
 </appender>
-
+//test
   
   <appender name="INFO_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
@@ -66,14 +66,24 @@
       <maxHistory>180</maxHistory>
     </rollingPolicy>
   </appender>
+
+    <appender name="SMS" class="kr.co.seoulit.account.sys.common.controller.LogSMSController">
+        <accessKey>KZ3NrzItq8tgEru1fq6E</accessKey> <!-- Access Key : https://www.ncloud.com/mypage/manage/info > 인증키 관리 > Access Key ID -->
+        <secretKey>Z7zN4AJM5Ge6VyVgirr8OIeKot4ykM3pjGbw6yc5</secretKey> <!-- Service Key : https://www.ncloud.com/mypage/manage/info > 인증키 관리 > Access Key ID -->
+        <serviceId>ncp:sms:kr:273349967014:smstest</serviceId> <!-- service ID : https://console.ncloud.com/sens/project > Simple & ... > Project > 서비스 ID -->
+        <to>01050419741</to> <!-- SMS destination phone number -->
+        <from>01050419741</from> <!-- SMS approve phone number -->
+    </appender>
   
   <root level="DEBUG">
-    <appender-ref ref="STDOUT"/>
+      <appender-ref ref="STDOUT" />
   </root>
-  <root level="ERROR">
-        <!--  <appender-ref ref="STDOUT" /> -->
-        <appender-ref ref="EMAIL"/>
+  <root level="INFO">
+      <appender-ref ref="STDOUT" />
+      <appender-ref ref="EMAIL"/>
+<!--      <appender-ref ref="SMS"/>-->
   </root>
+
   <logger name="LogController" additivity="false">
     <level value = "DEBUG" />
     <appender-ref ref="INFO_LOG" />

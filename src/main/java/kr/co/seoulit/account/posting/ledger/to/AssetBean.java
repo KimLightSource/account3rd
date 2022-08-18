@@ -1,13 +1,13 @@
 package kr.co.seoulit.account.posting.ledger.to;
 
 public class AssetBean {
-	private int assetNumber;
+	private long assetNumber;
 	private String assetName, assetCode;
 	
-	public int getAssetNumber() {
+	public long getAssetNumber() {
 		return assetNumber;
 	}
-	public void setAssetNumber(int assetNumber) {
+	public void setAssetNumber(long assetNumber) {
 		this.assetNumber = assetNumber;
 	}
 	public String getAssetName() {

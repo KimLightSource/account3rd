@@ -250,17 +250,17 @@ function createParentBudget(){
 	      {headerName: "계정과목", field: "accountName",width:200},
 	      {headerName: "누계예산대비실적",
 	    	  children:[
-	    		  {headerName: "실적",field: "annualBudgetRecord", width:120},
+	    		  {headerName: "실적",field: "abr", width:120},
 	    		  {headerName: "예산",field: "annualBudget",width:120},
 	    		  {headerName: "잔여예산",field: "remainingBudget",width:120},
-	    		  {headerName: "집행율(%)",field: "budgetExecRatio",width:120},
+	    		  {headerName: "집행율(%)",field: "budgetExecRate",width:120},
 	    	  ],},
 	    	  {headerName: "당월예산대비실적",
 		    	  children:[
-		    		  {headerName: "실적",field: "monthBudgetRecord", width:120},
+		    		  {headerName: "실적",field: "ambr", width:120},
 		    		  {headerName: "예산",field: "monthBudget",width:120},
 		    		  {headerName: "잔여예산",field: "remainingMonthBudget",width:120},
-		    		  {headerName: "집행율(%)",field: "monthBudgetExecRatio",width:120},
+		    		  {headerName: "집행율(%)",field: "monthBudgetExecRate",width:120},
 		    	  ],},
 	  ];
 	  gridOptions = {
@@ -295,17 +295,17 @@ function createDetailBudget() {
 	      {headerName: "계정과목", field: "accountName",width:200},
 	      {headerName: "누계예산대비실적",
 	    	  children:[
-	    		  {headerName: "실적",field: "annualBudgetRecord", width:120},
+	    		  {headerName: "실적",field: "abr", width:120},
 	    		  {headerName: "예산",field: "annualBudget",width:120},
 	    		  {headerName: "잔여예산",field: "remainingBudget",width:120},
-	    		  {headerName: "집행율(%)",field: "budgetExecRatio",width:120},
+	    		  {headerName: "집행율(%)",field: "budgetExecRate",width:120},
 	    	  ],},
 	    	  {headerName: "당월예산대비실적",
 		    	  children:[
-		    		  {headerName: "실적",field: "monthBudgetRecord", width:120},
+		    		  {headerName: "실적",field: "ambr", width:120},
 		    		  {headerName: "예산",field: "monthBudget",width:120},
 		    		  {headerName: "잔여예산",field: "remainingMonthBudget",width:120},
-		    		  {headerName: "집행율(%)",field: "monthBudgetExecRatio",width:120},
+		    		  {headerName: "집행율(%)",field: "monthBudgetExecRate",width:120},
 		    	  ],},
 	  ];
 	 gridOptions2 = {
@@ -337,7 +337,7 @@ function createDetailBudget() {
 function callBudgetStatus(){
 	
 	$.ajax({
-        type: "POST",
+        type: "GET",
         url: "${pageContext.request.contextPath}/budget/budgetstatus",
         data: {
             "budgetObj":JSON.stringify(dataSet)
@@ -345,8 +345,7 @@ function callBudgetStatus(){
         dataType: "json",
         async:false,
         success: function (jsonObj) {
-        	console.log("callBudgetStatus: ",dataSet);
-        	console.log(jsonObj);
+        	console.log("callBudgetStatus: ",jsonObj);
         	gridOptions.api.setRowData(jsonObj["budgetStatus"]);
         }
     });

@@ -1,15 +1,15 @@
 package kr.co.seoulit.account.posting.business.to;
 
 public class AccountingSettlementStatusBean {
-	private int accountPeriodNo;
+	private long accountPeriodNo;
 	private String totalTrialBalance;
 	private String incomeStatement;
 	private String financialPosition;
 	
-	public int getAccountPeriodNo() {
+	public long getAccountPeriodNo() {
 		return accountPeriodNo;
 	}
-	public void setAccountPeriodNo(int accountPeriodNo) {
+	public void setAccountPeriodNo(long accountPeriodNo) {
 		this.accountPeriodNo = accountPeriodNo;
 	}
 	public String getTotalTrialBalance() {

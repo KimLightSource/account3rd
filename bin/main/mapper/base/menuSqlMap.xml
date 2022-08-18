@@ -64,5 +64,5 @@
 			WHERE AM.AUTHORITY_CODE=WC.WORKPLACE_CODE)
       ]]>            
    </select>
-		
-	</mapper>
+
+</mapper>

@@ -6,9 +6,9 @@
 <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
   	<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
   	<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
-  
+
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  	
+
   	<!-- validate -->
 
 <script type="text/javascript"
@@ -45,7 +45,7 @@ label.error {
   	.modal-dialog.workplce{
   	 width: 100%; height: 100%; margin: 0; padding: 0;
   	}
-  	
+
 </style>
 <script>
 $(document).ready(function () {
@@ -57,19 +57,23 @@ $(document).ready(function () {
 
 	createAccountPeriod();
 	$("#searchPeriod").click(showAccountPeriod);//버튼 누를시
-	
+
 	createWorkplace();
 	$("#searchWorkplace").click(showWorkplace);//버튼 누를시
-	
+
 	createDepartment();//그리드생성 사업장,부서
-	
+
     createParentBudget();//그리드생성 계정과목코드,계정과목
     createDetailBudget(); //그리드생성 ParentBudget눌렀을때의 계정과목코드,계정과목
-    
-    for(var i=1; i<=17; i++){
+
+    for(var i=1; i<=12; i++){  //전기 예산 신청 input disabled
     	var input=document.querySelector("#c"+i);
     	input.disabled=true;
     }
+	for(var i=1; i<=4; i++){  //전기 예산 신청 합계 input disabled
+		var input=document.querySelector("#t"+i);
+		input.disabled=true;
+	}
     //input에 이벤트 달기
     for(var i=1; i<=12;i++){
     	var input=document.querySelector("#m"+i);	//td1번~12번
@@ -78,21 +82,23 @@ $(document).ready(function () {
 
     	input.disabled=true;
     }
-    
+
     for(var i=1;i<=4;i++){
     	var q=document.querySelector("#q"+i);
 		q.oninput=checkNum;
 		q.onchange=checkNum;
-		
+
 		q.disabled=true;
     }
-    
+	var total=document.querySelector("#total");
+	total.disabled=true;
+
     var sum=document.querySelector("#sum");
     sum.disabled=true;
-    
+
     var orgBudegtBtn=document.querySelector("#orgBudgetBtn");//버튼
     orgBudgetBtn.onclick=orgBudget;	//버튼누름
-    
+
 });
 
 var dataSet={
@@ -114,11 +120,11 @@ var dataSet={
 	"m11Budget":"",
 	"m12Budget":""
 	};
-	
+
 	function orgBudget(){
 		for(var i=1;i<=12;i++){
 			var input=document.querySelector("#m"+i);//m1~m12
-			var inputInt=input.value.split(",").join("");//보낸값이 담김 
+			var inputInt=input.value.split(",").join("");//보낸값이 담김
 			dataSet["m"+i+"Budget"]=parseInt(inputInt);//m1Budet1~12에 담은 값
 			}
 		$.ajax({
@@ -178,7 +184,7 @@ function createAccountPeriod(){//회계연도
 	      },
 	      {headerName: "회계시작일", field: "periodStartDate",width:250},
 	      {headerName: "회계종료일", field: "periodEndDate",width:250},
-	  ];	  	
+	  ];
 	  gridOptions3 = {
 			      columnDefs: columnDefs,
 			      rowSelection:'single', //row는 하나만 선택 가능
@@ -197,15 +203,15 @@ function createAccountPeriod(){//회계연도
 	    			  checkElement();//호출
 	    			  console.log("dataSet"+dataSet["accountPeriodNo"]);
 	    			  console.log("selectedRow"+selectedRow["accountPeriodNo"]);
-	    			  dataSet["accountPeriodNo"]=selectedRow["accountPeriodNo"];//내가 선택한 연도    			
+	    			  dataSet["accountPeriodNo"]=selectedRow["accountPeriodNo"];//내가 선택한 연도
 	    		  }
 	   }
 	  accountGrid = document.querySelector('#accountYearGrid');
 		new agGrid.Grid(accountGrid,gridOptions3);//ag그리드 생성
  }
- 
+
  function showAccountPeriod(){//show로 이름이 정의되어있지만 값을 넣는것임
-	 
+
 	 $.ajax({
 	        type: "GET",
 	        url: "${pageContext.request.contextPath}/operate/accountperiodlist",
@@ -218,16 +224,16 @@ function createAccountPeriod(){//회계연도
 	            gridOptions3.api.setRowData(jsonObj);//회계 연도에 값 넣음
 	        }
 	    });
-	 
+
  }
- 
+
  function createWorkplace(){
 	 rowData=[];
 	  	var columnDefs = [
 	  		{headerName: "사업장코드", field: "workplaceCode",sort:"asc", width:200
 		      },
 		      {headerName: "사업장명", field: "workplaceName",width:250},
-		  ];	  	
+		  ];
 		  gridOptions4 = {
 				      columnDefs: columnDefs,
 				      rowSelection:'single', //row는 하나만 선택 가능
@@ -244,13 +250,13 @@ function createAccountPeriod(){//회계연도
 		    			  selectedRow=event.data;
 		    			  showDepartment(selectedRow["workplaceCode"]);//내가 선택한 사업장 번호
 		    			  console.log(selectedRow["workplaceName"]);
-		    			  
+
 		    		  }
 		   }
 		  workplaceGrid = document.querySelector('#workplaceGrid');
 			new agGrid.Grid(workplaceGrid,gridOptions4);
  }
- 
+
  /* ag-Grid 선택된 열의 레코드 반환하는 함수
  function getSelectedRows() {
 	    var selectedNodes = gridOptions4.api.getSelectedNodes()
@@ -266,7 +272,7 @@ function createAccountPeriod(){//회계연도
 			{headerName: "사업장명", hide:"true", field: "workplaceName",width:250},
 	  		{headerName: "부서코드", field: "deptCode",sort:"asc", width:200},
 			{headerName: "부서명", field: "deptName",width:250},
-		  ];	  	
+		  ];
 		  gridOptions5 = {
 				      columnDefs: columnDefs,
 				      rowSelection:'single', //row는 하나만 선택 가능
@@ -294,7 +300,7 @@ function createAccountPeriod(){//회계연도
 		  deptGrid = document.querySelector('#deptGrid');
 			new agGrid.Grid(deptGrid,gridOptions5);//사업장그리드 생성
  }
- 
+
  function showWorkplace(){
 	 $.ajax({
 	        type: "GET",
@@ -326,14 +332,14 @@ function createAccountPeriod(){//회계연도
 	        }
 	    });
  }
- 
+
 function createParentBudget(){//좌측 그리드
 	rowData=[];
   	var columnDefs = [
 	      {headerName: "계정과목 코드", field: "accountInnerCode",sort:"asc", width:100
 	      },
 	      {headerName: "계정과목", field: "accountName",width:250},
-	  ];	  	
+	  ];
 	  gridOptions = {
 			      columnDefs: columnDefs,
 			      rowSelection:'single', //row는 하나만 선택 가능
@@ -354,13 +360,13 @@ function createParentBudget(){//좌측 그리드
 	  accountGrid = document.querySelector('#parentBudgetGrid');
 		new agGrid.Grid(accountGrid,gridOptions);
  }
- 
+
 function createDetailBudget() {
 	rowData=[];
   	var columnDefs = [
 	      {headerName: "계정과목 코드", field: "accountInnerCode",width:100},
 	      {headerName: "계정과목", field: "accountName", width:250},
-	  ];	  	
+	  ];
 	 gridOptions2 = {
 			      columnDefs: columnDefs,
 			      rowSelection:'single', //row는 하나만 선택 가능
@@ -374,22 +380,79 @@ function createDetailBudget() {
 	    		  onRowClicked:function (event){	//행을 클릭시
 	    			  console.log("Row선택");
 	    			  selectedRow=event.data;	//클릭한행의 데이터를 selectRow에 담음
-	    			
+
 	    			  dataSet["accountInnerCode"]=selectedRow["accountInnerCode"];//dataSet의 accountInnerCode가 내가 선택한 행의 값으로 변경
+
 
 	    			  showOrganizedBudget();//출력되는 td행에 관함
 					  ableCurrentInput(); // 당기 예산 신청 인풋 텍스트 수정가능
+					  previousBudgetValueSet();
+					  previousBudgetAppl();
+
 	    		  }
 	   }
 	 accountDetailGrid = document.querySelector('#detailBudgetGrid');//id를 찾아 변수에담음
 	 	new agGrid.Grid(accountDetailGrid,gridOptions2);//그리드생성
 }
 
+
+function previousBudgetAppl(){
+	$.ajax({
+		type: "GET",
+		url: "${pageContext.request.contextPath}/budget/budget",
+		data: {
+			"method": "findBudget",
+			"budgetObj":JSON.stringify(dataSet),
+		},
+		dataType: "json",
+		async:false,
+		success: function (data){
+			console.log(data)
+			document.querySelector("#h2Tag").innerHTML="";
+			inputPreviousBudgetAppl(data);
+		},
+		error: function(data){
+			document.querySelector("#h2Tag").innerHTML="전기에 신청한 해당 계정과목의 예산이 없습니다";
+		}
+	})
+}
+
+function previousBudgetValueSet() { // 전기 예산 신청 값들 초기화 하기
+	for(var i=1; i<=12;i++){   // 월 금액 초기화 하기
+		var input=document.querySelector("#c"+i);
+		input.value=null;
+	}
+	for(var a=1; a<=4; a++){   // 분기 금액 초기화 하기
+		var sum=document.querySelector("#t"+a);
+		sum.value=null;
+	}
+	document.querySelector("#total").value=null; // 합계 초기화 하기
+}
+
+function inputPreviousBudgetAppl(data){ // 전기 예산 신청 값 불러와 담기
+	var num=0;
+	var num1=0;
+	for(var i=1; i<=12;i++){
+		var input=document.querySelector("#c"+i);
+		input.value=data["m"+i+"Budget"];
+		if(input.value == "") num += 0;
+		else num+=parseInt(input.value.split(",").join(""));//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
+		if(i%3==0){//i에 3을나눠서 0일떄 즉 3,6,9,12일시
+			var t=document.querySelector("#t"+i/3);//분기1,2,3,4
+			t.value=numToMoney(num+"");//돈형식으로 만들어주는 함수에 전송
+			num1 += num
+			num=0;
+		}
+	}
+	var total = document.querySelector("#total");
+	total.value=numToMoney(num1+"");
+}
+
 function showOrganizedBudget(){
 	console.log(dataSet);
-	
+
 	console.log(JSON.stringify(dataSet));
-	
+
 	$.ajax({
         type: "POST",
         url: "${pageContext.request.contextPath}/budget/budgetappl",
@@ -399,8 +462,8 @@ function showOrganizedBudget(){
         dataType: "json",
         async:false,
         success: function (jsonObj){
-        	
-        	if(jsonObj.errorCode==-1){//에러코드일시 
+
+        	if(jsonObj.errorCode==-1){//에러코드일시
         		for(var i=1;i<=12;i++){
         			var input=document.querySelector("#m"+i);//m1~12
             		input.value=0;//넣는값 0
@@ -410,7 +473,7 @@ function showOrganizedBudget(){
             		}
         		}
         	}
-        	
+
         	console.log(jsonObj);
         	//console.log(jsonObj.budgetBean);
         	//console.log(jsonObj.budgetBean.m1Budget);
@@ -424,14 +487,14 @@ function showOrganizedBudget(){
         			var value=jsonObj.budgetBean["m"+i+"Budget"]+"";//numToMoney 함수 적용하기
         			input.value=numToMoney(value);//빈값 ""을 보내줌"
         			num+=jsonObj.budgetBean["m"+i+"Budget"];//num=1~12
-        				
+
         			if(i%3==0){
         				var q=document.querySelector("#q"+i/3);
         				q.disabled=false;
         				q.value=numToMoney(num+"");
         				num=0;
         			}
-        		}        		
+        		}
         	}
         }
     });
@@ -446,7 +509,7 @@ function ableCurrentInput() {
 
 //숫자를 돈 형식으로 바꿔주는 함수
 function numToMoney(value){//10000
-    
+
     var length=value.length;//길이
     var valueArray=value.split("");//빈공간 ""을 기준으로 잘라서 배열에 넣음->모든숫자가 다 잘림 100-> 1/0/0
     var strBuffer=[];//빈배열
@@ -467,7 +530,7 @@ function checkElement(){//회계연도,사업장,부서가 다입력되어있을
 }
 
 function showParentBudget(){//왼쪽 그리드 값 할당
-	
+
 	$.ajax({
         type: "GET",
         url: "${pageContext.request.contextPath}/operate/parentbudgetlist",
@@ -479,12 +542,12 @@ function showParentBudget(){//왼쪽 그리드 값 할당
         	console.log(jsonObj);
             gridOptions.api.setRowData(jsonObj);//왼쪽 그리드에 값 넣음
         }
-    });	
+    });
 }
 
 function showDetailBudget(code){//우측 그리드	좌측 그리드에서 선택한행의 accountInnerCode(계정과목코드) 정보를 가져옴
 	console.log(code);
-	
+
 	$.ajax({
         type: "GET",
         url: "${pageContext.request.contextPath}/operate/detailbudgetlist",
@@ -497,7 +560,7 @@ function showDetailBudget(code){//우측 그리드	좌측 그리드에서 선택
         	console.log(jsonObj);
             gridOptions2.api.setRowData(jsonObj); //데이터 삽입
         }
-    });	
+    });
 }
 
 
@@ -532,10 +595,10 @@ function checkNum(){
 this.value=strBuffer.join("");
 console.log("checkNum: "+this.value);
 	        }
-	    
-	    
 
-	        
+
+
+
 	        /*
 function checkMonetaryFormat(){
 	strBuffer=[];
@@ -587,11 +650,11 @@ function checkMonetaryFormat(){
                   	</button>
                   </div>
                 </div>
-                
+
 -->
 </div>
                 <hr>
-                <!-- 
+                <!--
 <table style="width:100%;">
  <tr>
   <td>
@@ -631,16 +694,17 @@ function checkMonetaryFormat(){
       <small>
       <table>
       <tr><td>월</td><td>금액</td><td>월</td><td>금액</td><td>월</td><td>금액</td><td>분기</td><td>금액</td></tr>
-      <tr><td>01</td><td><input id="c1" type="text"></td><td>02</td><td><input id="c2" type="text"></td><td>03</td><td><input id="c3" type="text"></td><td>1분기</td><td><input id="c13" type="text" readonly></td></tr>
-      <tr><td>04</td><td><input id="c4" type="text"></td><td>05</td><td><input id="c5" type="text"></td><td>06</td><td><input id="c6" type="text"></td><td>2분기</td><td><input id="c14" type="text" readonly></td></tr>
-      <tr><td>07</td><td><input id="c7" type="text"></td><td>08</td><td><input id="c8" type="text"></td><td>09</td><td><input id="c9" type="text"></td><td>3분기</td><td><input id="c15" type="text" readonly></td></tr>
-      <tr><td>10</td><td><input id="c10" type="text"></td><td>11</td><td><input id="c11" type="text"></td><td>12</td><td><input id="c12" type="text"></td><td>4분기</td><td><input id="c16" type="text" readonly></td></tr>
-      <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="c17" type="text"></td></tr> 
+      <tr><td>01</td><td><input id="c1" type="text"></td><td>02</td><td><input id="c2" type="text"></td><td>03</td><td><input id="c3" type="text"></td><td>1분기</td><td><input id="t1" type="text" readonly></td></tr>
+      <tr><td>04</td><td><input id="c4" type="text"></td><td>05</td><td><input id="c5" type="text"></td><td>06</td><td><input id="c6" type="text"></td><td>2분기</td><td><input id="t2" type="text" readonly></td></tr>
+      <tr><td>07</td><td><input id="c7" type="text"></td><td>08</td><td><input id="c8" type="text"></td><td>09</td><td><input id="c9" type="text"></td><td>3분기</td><td><input id="t3" type="text" readonly></td></tr>
+      <tr><td>10</td><td><input id="c10" type="text"></td><td>11</td><td><input id="c11" type="text"></td><td>12</td><td><input id="c12" type="text"></td><td>4분기</td><td><input id="t4" type="text" readonly></td></tr>
+      <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td>합계</td><td><input id="total" type="text"></td></tr>
       </table>
       </small>
+		  <h4 id="h2Tag"></h4>
       </div>
-	
-	
+
+
       <h6>&nbsp;&nbsp;&nbsp;당기 예산 신청</h6>
       <div class="row" align="left" style="width:100%; padding:10px;">
       <small>
@@ -654,14 +718,14 @@ function checkMonetaryFormat(){
       </table>
       </small>
       </div>
-      
+
       <div class="row" style="padding:10px;">
       <input type="button" id="orgBudgetBtn" value="예산신청" class="btn btn-Light shadow-sm btnsize" style="margin-left:5px;">
       </div>
       <div class="row" style="padding:10px;">
       <input type="button" value="새로고침" onClick="window.location.reload()" class="btn btn-Light shadow-sm btnsize" style="margin-left:5px;">
       </div>
-      
+
       	<div align="center" class="modal fade" id="accountYearModal" tabindex="-1"
 		role="dialog" aria-labelledby="accountLabel">
 		<div class="modal-dialog" role="document">
@@ -685,7 +749,7 @@ function checkMonetaryFormat(){
 		</div>
 	</div>
 	</div>
-	
+
 	<div align="left" class="modal fade" id="workplaceModal" tabindex="-1"
 		role="dialog" aria-labelledby="workplaceLabel">
 	<div class="modal-dialog" role="document">
@@ -715,7 +779,7 @@ function checkMonetaryFormat(){
 		</div>
 	</div>
 	</div>
-	
+
 	<div align="center" class="modal fade" id="deptModal" tabindex="-1"
 		role="dialog" aria-labelledby="deptLabel">
 	<div class="modal-dialog" role="document">
