@@ -15,9 +15,11 @@ public interface FormulationMapper {
 	
 	public BudgetBean selectBudget(BudgetBean bean);
 	
+	public BudgetBean selectBudgetorganization(BudgetBean bean);
+	
 	public void selectBudgetList(BudgetBean bean);
 	
-	public ArrayList<BudgetBean>  selectBudgetAppl(BudgetBean bean);
+	public BudgetBean selectBudgetAppl(BudgetBean bean);
 	
 	public HashMap<String, Object> selectBudgetStatus(HashMap<String, Object> bean);
 

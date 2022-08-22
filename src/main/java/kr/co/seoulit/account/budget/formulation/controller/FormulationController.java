@@ -43,6 +43,16 @@ public class FormulationController {
         return formulationService.findBudget(budgetBean);
     }
 
+    @GetMapping("/budgetorganization")
+    public BudgetBean findBudgetorganization(@RequestParam String budgetObj) {
+
+        JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
+        BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
+
+
+        return formulationService.findBudgetorganization(budgetBean);
+    }
+
     @GetMapping("/budgetlist")
     public void findBudgetList(@RequestParam String budgetObj) {
 
@@ -57,13 +67,10 @@ public class FormulationController {
     public ModelMap registerBudget(@RequestParam(value = "budgetObj") String budgetObj) {
         JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
         BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
-        map = new ModelMap();
         map = formulationService.registerBudget(budgetBean);
         return map;
 
-    }
-
-    ;
+    };
 
     @PutMapping("/budgetlist")
     public ModelMap modifyBudget(@RequestParam(value = "budgetObj") String budgetObj) {
@@ -97,14 +104,13 @@ public class FormulationController {
         return params;
     }
 
-    @RequestMapping(value = "/budgetappl", method = RequestMethod.POST)
-    public ArrayList<BudgetBean> findBudgetAppl(@RequestParam String budgetObj) {
+    @GetMapping("/budgetappl")
+    public BudgetBean findBudgetAppl(@RequestParam String budgetObj) {
 
-
-        JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
-        BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
-
-        return null;
+    	JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
+    	BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
+    	
+        return formulationService.findBudgetAppl(budgetBean);
     }
 
     @GetMapping("/comparisonBudget")

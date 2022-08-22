@@ -74,7 +74,7 @@ $(document).ready(function () {
     	
     	var input=document.querySelector("#m"+i);
     	input.oninput=checkNum;
-    	input.onchange=qRefresh;
+    	input.onchange=valueRefresh;
     	input.disabled=true;
     }
     for(var i=1;i<=4;i++){
@@ -85,10 +85,9 @@ $(document).ready(function () {
 		q.disabled=true;
 		
     }
-    for(var i=1;i<=1;i++){
-    	var msum=document.querySelector("#msum");
-    	msum.disabled=true;
-    }
+    
+   	var msum=document.querySelector("#msum");
+    msum.disabled=true;
     
     for(var i=1;i<=4;i++){
     	var q=document.querySelector("#q"+i);
@@ -148,8 +147,9 @@ var ApplBudget={
     		var input1=document.querySelector("#am"+i);
     		var input2=document.querySelector("#m"+i);
     		input2.value=input1.value;
+    		input2.disabled=false;
     	}
-    	for(var i=1; i<=3; i++){
+    	for(var i=1; i<=4; i++){
     		var input1=document.querySelector("#aq"+i);
     		var input2=document.querySelector("#q"+i);
     		input2.value=input1.value;
@@ -164,7 +164,6 @@ var ApplBudget={
 			var input=document.querySelector("#m"+i);
 			var inputInt=input.value.split(",").join("");
 			dataSet["m"+i+"Budget"]=parseInt(inputInt);
-			//dataSet["m"+i+"Budget"]=parseInt(input.value);
 			}
 		console.log(dataSet);
 		
@@ -178,12 +177,40 @@ var ApplBudget={
 	        async:false,
 	        success: function (jsonObj) {
 	        	console.log(jsonObj);
-	            
-	            var result=document.querySelector("#result");
-	            //result.value="편성 완료";
-	            alert("편성 완료");
+	        	if(jsonObj.errorCode == -2){
+	        		var answer = confirm("동일한 연도, 사업장, 부서, 계정과목의 예산 편성이 완료된 상태입니다" +
+		 			"해당 예산 편성을 조정하시겠습니까?")
+					if(answer) { //위의 confirm에서 확인을 누른경우
+						modifyBudgetList();
+					}
+	        	}else{
+	            	alert("편성 완료");
+	        	}
 	        }
 	    });
+	}
+	
+	function modifyBudgetList() { // 예산 신청에서 PK값이 중복되는 예산편성데이터가 있을경우, 해당 메서드 실행
+		$.ajax({
+			type: "PUT",
+			url: "${pageContext.request.contextPath}/budget/budgetlist",
+			data: {
+				"budgetObj":JSON.stringify(dataSet)
+			},
+			dataType: "json",
+			async:false,
+			success: function (data) {
+				console.log(data);
+				if(data.errorCode == -1){
+					console.log(data)
+					alert("서버 오류");
+				}
+				else {
+					console.log(data)
+					alert("편성 완료");
+				}
+			}
+		});
 	}
 
 function createAccountPeriod(){//회계연도
@@ -399,8 +426,9 @@ function createDetailBudget() {
 	    			  dataSet["accountInnerCode"]=selectedRow["accountInnerCode"];
 	    			  ApplBudget["accountInnerCode"]=selectedRow["accountInnerCode"];
 	    			  
-	    			  showAppliedBudget();
-	    			  showOrganizedBudget();
+	    			  previousBudgetValueSet();
+	    			  showAppliedBudget();//신청 예산
+	    			  showOrganizedBudget();//편성 예산
 	    		  }
 	   }
 	 accountDetailGrid = document.querySelector('#detailBudgetGrid');
@@ -451,8 +479,8 @@ function checkElement(){
 function showOrganizedBudget(){
 
 	$.ajax({
-        type: "POST",
-        url: "${pageContext.request.contextPath}/budget/budget",
+        type: "GET",
+        url: "${pageContext.request.contextPath}/budget/budgetorganization",
         data: {
             "budgetObj":JSON.stringify(dataSet)
         },
@@ -477,103 +505,113 @@ function showOrganizedBudget(){
         	//var json=JSON.parse(jsonObj.budgetBean);
         	
         	var num=0;
+        	var sum=0;
         	for(var i=1; i<=12;i++){
         		var input=document.querySelector("#m"+i);
         		input.disabled=false;
+		
         		if(jsonObj["m"+i+"Budget"]||jsonObj["m"+i+"Budget"]==0){
         			var value=jsonObj["m"+i+"Budget"]+"";//numToMoney 함수 적용하기
         			input.value=numToMoney(value);
         			num+=jsonObj["m"+i+"Budget"];
+        			sum+=num;
     				
         			if(i%3==0){
         				var q=document.querySelector("#q"+i/3);
-        				q.disabled=false;
         				q.value=numToMoney(num+"");
         				num=0;
-            			var msum=document.querySelector("#msum");
-            			msum.disabled=false;
-            			var n1=eval(q1.value);
-            			var n2=eval(q2.value);
-            			var n3=eval(q3.value);
-            			var n4=eval(q4.value);
-    					msum.value=n1+n2+n3+n4;
         			}
         		}
-        		
         	}
+        	
+        	var msum=document.querySelector("#msum");
+			msum.value=numToMoney(sum+"");;
         }
     });
 }
 
+function previousBudgetValueSet() { // 신청예산, 편성예산 값들 초기화 하기
+	for(var i=1; i<=12;i++){   // 월 금액 초기화 하기
+		var input=document.querySelector("#am"+i);
+		var input1=document.querySelector("#m"+i);
+		input.value=null;
+		input1.value=null;
+		input1.disabled=true;
+	}
+	for(var a=1; a<=4; a++){   // 분기 금액 초기화 하기
+		var sum=document.querySelector("#aq"+a);
+		var sum1=document.querySelector("#q"+a);
+		sum.value=null;
+		sum1.value=null;
+		sum1.disabled=true;
+	}
+	document.querySelector("#sum").value=null; // 합계 초기화 하기
+	document.querySelector("#msum").value=null;
+}
 
 function showAppliedBudget(){
 
 	$.ajax({
-        type: "POST",
+        type: "GET",
         url: "${pageContext.request.contextPath}/budget/budgetappl",
         data: {
             "budgetObj":JSON.stringify(ApplBudget)
         },
         dataType: "json",
         async:false,
-        success: function (jsonObj) {
-        	
-        	if(jsonObj.errorCode==-1){
-        		for(var i=1;i<=12;i++){
-        			var input=document.querySelector("#am"+i);
-            		input.value=0;
-            		if(i%3==0){
-            			var q=document.querySelector("#aq"+i/3);
-            			q.value=0;
-            		}
-        		}
-        	}
-        	
+        success: function (jsonObj){
         	console.log(jsonObj);
-        	//console.log(jsonObj.budgetBean);
-        	//console.log(jsonObj.budgetBean.m1Budget);
-        	//var json=JSON.parse(jsonObj.budgetBean);
         	
-        	var num=0;
-        	for(var i=1; i<=12;i++){
-        		var input=document.querySelector("#am"+i);
-        		if(jsonObj)
-        			if(jsonObj["m"+i+"Budget"]||jsonObj["m"+i+"Budget"]==0){
-        		var value=jsonObj["m"+i+"Budget"]+"";//numToMoney 함수 적용하기
-        		input.value=numToMoney(value);
-        		num+=jsonObj["m"+i+"Budget"];
-        		if(i%3==0){
-        			var q=document.querySelector("#aq"+i/3);
-        			q.value=numToMoney(num+"");
-        			num=0;
-					if(q.value!=0){
-	            		var total=document.querySelector("#sum");
-	            		total.value+=q.value;
-					}
-        		}	
-        		
-        		}
-        		
-        	}
-        }
+        	inputBudgetAppl(jsonObj);
+        },
+		error: function(jsonObj){
+			alert("전기에 신청한 해당 계정과목의 예산이 없습니다");
+		}
     });
 }
 
-function qRefresh(){
+function inputBudgetAppl(jsonObj){
+	
+		var num=0;
+		var total=0;
+		for(var i=1; i<=12;i++){
+			var input=document.querySelector("#am"+i);
+			input.value=jsonObj["m"+i+"Budget"];
+			if(input.value == "") num += 0;
+			else num+=parseInt(input.value.split(",").join(""));
+			//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
+			total+=num;
+			if(i%3==0){//i에 3을나눠서 0일떄 즉 3,6,9,12일시
+				var aq=document.querySelector("#aq"+i/3);//분기1,2,3,4
+				aq.value=numToMoney(num+"");//돈형식으로 만들어주는 함수에 전송
+				num=0;
+			}
+		}
+		var sum = document.querySelector("#sum");
+		sum.value=numToMoney(total+"");
+}
+	
+
+function valueRefresh(){
 	var num=0;
+	var msum=0;
     for(var i=1; i<=12;i++){
     	var input=document.querySelector("#m"+i);
+    	dataSet["m"+i+"Budget"]=input.value;
     	num+=parseInt(input.value.split(",").join(""));
+    	msum+=parseInt(num);
     	if(i%3==0){
 			var q=document.querySelector("#q"+i/3);
 			q.value=numToMoney(num+"");
 			num=0;
 		}
     }
+    msum=String(msum);
+    console.log(msum);
+   	document.querySelector("#msum").value=numToMoney(msum);
 }
 
 function checkNum(){
-	console.log("AAAAAAAAAAAAA");
 	this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').replace(/(^0+)/, "");
     var length=this.value.length;
     var value=this.value.split("");
@@ -583,9 +621,9 @@ function checkNum(){
         if((i-3)%3==0&&i!=0) strBuffer.unshift(",");
         strBuffer.unshift(value[length-1-i]);
     }
-this.value=strBuffer.join("");
-console.log("checkNum: "+this.value);
-	        }
+	this.value=strBuffer.join("");
+	console.log("checkNum: "+this.value);
+ }
 	    
 	    
 //숫자를 돈 형식으로 바꿔주는 함수

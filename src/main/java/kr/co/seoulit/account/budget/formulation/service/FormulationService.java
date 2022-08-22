@@ -14,9 +14,11 @@ public interface FormulationService {
 	
 	public BudgetBean findBudget(BudgetBean bean);
 	
+	public BudgetBean findBudgetorganization(BudgetBean bean);
+	
 	public void findBudgetList(BudgetBean bean);
 	
-	public ArrayList<BudgetBean> findBudgetAppl(BudgetBean bean);
+	public BudgetBean findBudgetAppl(BudgetBean bean);
 	
 	public HashMap<String, Object> findBudgetStatus(HashMap<String, Object> bean);
 
