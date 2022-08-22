@@ -3,6 +3,7 @@ package kr.co.seoulit.account.budget.formulation.service;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
+import kr.co.seoulit.account.budget.formulation.to.ComparisonBudgetBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -91,5 +92,13 @@ public class FormulationServiceImpl implements FormulationService {
 			map.put("exceptionClass", e.getClass());
 		}
 		return map;
+	}
+
+	@Override
+	public HashMap<String, Object> findComparisonBudget(HashMap<String, Object> params) {
+		formulationDAO.selectComparisonBudget(params);
+
+
+		return params;
 	}
 }

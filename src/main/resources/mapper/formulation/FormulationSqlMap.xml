@@ -184,18 +184,18 @@
 		<parameter property="accountInnerCode" jdbcType="VARCHAR" javaType="String" mode="IN" />
 		<parameter property="accountPeriodNo" jdbcType="VARCHAR" javaType="String" mode="IN" />
 		<parameter property="budgetingCode" jdbcType="VARCHAR" javaType="String" mode="IN" />
-		<parameter property="m1Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m2Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m3Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m4Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m5Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m6Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m7Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m8Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m9Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m10Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m11Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
-		<parameter property="m12Budget" jdbcType="DECIMAL" javaType="int" mode="IN" />
+		<parameter property="m1Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m2Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m3Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m4Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m5Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m6Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m7Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m8Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m9Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m10Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m11Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
+		<parameter property="m12Budget" jdbcType="DECIMAL" javaType="long" mode="IN" />
 	</parameterMap>
 
 	<!-- 	<select id="selectBudgetList" parameterMap="budgetParams" statementType="CALLABLE">
@@ -215,6 +215,7 @@
 <!--	</parameterMap>-->
 
 	<resultMap id="budgetStatusBeanResult" type="kr.co.seoulit.account.budget.formulation.to.BudgetStatusBean">
+
 	</resultMap>
 
 	<resultMap id="budgetBeanResult" type="kr.co.seoulit.account.budget.formulation.to.BudgetBean">
@@ -272,5 +273,40 @@
 		  and BUDGETING_CODE= #{budgetingCode}
 		]]>
     </select>
+
+	<resultMap id="comparisonBudgetBeanResult" type="kr.co.seoulit.account.budget.formulation.to.ComparisonBudgetBean">
+		<result property="budgetDate" column="BUDGET_DATE"/>
+		<result property="appBudget" column="APP_BUDGET"/>
+		<result property="orgBudget" column="ORG_BUDGET"/>
+		<result property="execPerform" column="EXEC_PERFORM"/>
+		<result property="budgetAccountComparison" column="BUDGET_ACCOUNT_COMPARISON"/>
+	</resultMap>
+
+<!--	<parameterMap id="budgetComparisonParams" type="java.util.HashMap" >-->
+<!--		<parameter property="accountPeriodNo" jdbcType="VARCHAR" javaType="String" mode="IN" />-->
+<!--		<parameter property="accountInnerCode" jdbcType="VARCHAR" javaType="String" mode="IN" />-->
+<!--		<parameter property="workplaceCode" jdbcType="VARCHAR" javaType="String" mode="IN" />-->
+<!--		<parameter property="deptCode" jdbcType="VARCHAR" javaType="String" mode="IN" />-->
+<!--		<parameter property="result" jdbcType="CURSOR" javaType="java.sql.ResultSet" mode="OUT"-->
+<!--				   resultMap="ComparisonBudgetBeanResult"/>-->
+<!--	</parameterMap>-->
+
+<!--	예산 대비실적-->
+	<select id="selectComparisonBudget" statementType="CALLABLE" >
+		<![CDATA[
+		{call BUDGET_COMPARISON(
+				#{accountPeriodNo, jdbcType=VARCHAR},
+		    	#{accountInnerCode, jdbcType=VARCHAR},
+				#{workplaceCode, jdbcType=VARCHAR},
+				#{deptCode, jdbcType=VARCHAR},
+				#{RESULT, jdbcType=CURSOR, javaType=java.sql.ResultSet, mode=OUT, resultMap=comparisonBudgetBeanResult})}
+		]]>
+	</select>
+<!--	<select id="selectComparisonBudget" statementType="CALLABLE" parameterMap="budgetComparisonParams">-->
+<!--		<![CDATA[-->
+<!--		{call BUDGET_COMPARISON(?,?,?,?,?)}-->
+<!--		]]>-->
+<!--	</select>-->
+
 
 </mapper>

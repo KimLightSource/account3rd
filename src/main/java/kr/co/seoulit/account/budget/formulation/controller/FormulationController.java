@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import kr.co.seoulit.account.budget.formulation.to.ComparisonBudgetBean;
 import kr.co.seoulit.account.sys.common.exception.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -104,5 +105,24 @@ public class FormulationController {
         BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
 
         return null;
+    }
+
+    @GetMapping("/comparisonBudget")
+    public HashMap<String, Object> findComparisonBudget(@RequestParam String budgetObj) {
+
+        System.out.println("budgetObj = " + budgetObj);
+        HashMap<String, Object> params = new HashMap<>();
+        JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
+        BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
+
+        params.put("accountPeriodNo", budgetBean.getAccountPeriodNo());
+        params.put("deptCode", budgetBean.getDeptCode());
+        params.put("workplaceCode", budgetBean.getWorkplaceCode());
+        params.put("accountInnerCode", budgetBean.getAccountInnerCode());
+
+        params = formulationService.findComparisonBudget(params);
+
+        System.out.println("params = " + params);
+        return params;
     }
 }
