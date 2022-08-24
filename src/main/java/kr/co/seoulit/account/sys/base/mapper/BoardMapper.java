@@ -16,4 +16,8 @@ public interface BoardMapper {
 
 	void updateLookup(String id);
 
+	void insertBoard(BoardBean boardbean);
+
+	void boardModify(BoardBean boardbean);
+
 }

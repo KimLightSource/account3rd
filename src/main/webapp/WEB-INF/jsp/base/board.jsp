@@ -49,7 +49,6 @@
 	</style>
 	<script>
 		$(document).ready(function() {
-
 			createAccount();
 			showAccount();
 
@@ -167,6 +166,19 @@
 				});
 			}
 		}
+		function fn_addtoBoard(){
+			$("#textarea").attr("disabled", false);
+			$("#title").attr("disabled", false);
+			$("#id").attr("disabled", false);
+			$("#textarea").focus();
+			$("#edit").hide();
+			$("#editdiv").html("<a href='#' id='edit' class='btn btn-primary' onClick='fn_edit()'>수정완료</a> ")
+		}
+		function fn_edit(){
+			var form = document.getElementById("writeForm");
+			form.action = "${pageContext.request.contextPath}/base/boardModify";
+			form.submit();
+		}
 
 
 
@@ -182,15 +194,20 @@
 			display: inline;
 			margin-left: 500px;
 		}
+		table{border-collapse : collapse;}
+		tr{ border-top: 1px solid gray;
+
+		}
+		th{
+			padding: 10px;}
+
 	</style>
 </head>
 <body class="bg-gradient-primary">
 <!-- 게시판 위 버튼 -->
 <h4 id="header_board2">게시판</h4>
-<a href='${pageContext.request.contextPath}/base/boardwriteform'
-   style="margin-left: 1084px;" class="btn btn-primary">글쓰기</a>
-<a href='#' class="btn btn-primary">수정</a>
-<a href='#' class="btn btn-primary">삭제</a>
+<div style="float: right;"><a href='${pageContext.request.contextPath}/base/boardwriteform'
+							  class="btn btn-primary">글쓰기</a></div>
 <hr>
 <div style="float: left; width: 100%; padding: 10px;">
 	<div align="center">
@@ -200,68 +217,73 @@
 	</div>
 </div>
 
-<!--  게시판 상세보기 모달창이여요-->
-<div align="center" class="modal fade" id="codeModal" tabindex="-1" role="dialog"
-	 aria-labelledby="customerCodeModalGrid">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content" style="width:700px;">
-			<div class="modal-header">
-				<h5 class="modal-title" id="customerCodeModalLabel">게시판</h5>
-				<button class="close" type="button" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
-			</div>
-			<div class="modal-body">
-
-				<table>
-
-					<tr>
-						<th>제목</th>
-						<td colspan="2"><input style="width: 500px" type="text" id="title" readonly/></td>
-					</tr>
-					<tr>
-						<th>글 번호</th>
-						<td>
-							<input style="width: 100px" type="text" id="id" name="id"
-								   readonly/>
-						</td>
-						<td> 조회수:
-							<input style="width: 100px" type="text" id="lookup"
-								   readonly/>
-						</td>
-					</tr>
-					<tr>
-						<th>작성자</th>
-						<td><input style="width: 300x" type="text" id="writer"
-								   readonly/></td>
-						<td><div id="writtenday"></div></td>
-
-
-					</tr>
-					<tr>
-						<th>내용</th>
-						<td colspan="2">
-								<textarea style="width: 500px" rows="20" cols="20"
-										  id="textarea"  readonly>
-								</textarea>
-						</td>
-
-					</tr>
-
-
-				</table>
-				<div>
-
-					<a href='#' class="btn btn-primary" onClick='fn_addtoBoard()'>수정</a>
-					<a href='#' class="btn btn-primary" onClick='deleteBoard()'>삭제</a>
+<!--  게시판 상세보기 모달창이요-->
+<form id="writeForm" method="post">
+	<div align="center" class="modal fade" id="codeModal" tabindex="-1" role="dialog"
+		 aria-labelledby="customerCodeModalGrid">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:700px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="customerCodeModalLabel">게시판</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
 				</div>
 
 
+				<div class="modal-body">
 
+					<table>
+
+						<tr>
+							<th>제목</th>
+							<td colspan="2"><input style="width: 500px" type="text" id="title" name="title" disabled="disabled"/></td>
+						</tr>
+						<tr>
+							<th>글번호</th>
+							<td>
+								<input style="width: 100px;" type="text" id="id" name="id"
+									   readonly disabled="disabled"/>
+							</td>
+							<td> 조회수:
+								<input style="width: 100px" type="text" id="lookup"
+									   disabled="disabled"/>
+							</td>
+						</tr>
+						<tr>
+							<th>작성자</th>
+							<td><input style="width: 300x" type="text" id="writer"
+									   disabled="disabled"/></td>
+							<td><div id="writtenday"></div></td>
+
+
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td colspan="2">
+								<textarea style="width: 500px" rows="20" cols="20" name="contents"
+										  id="textarea"disabled="disabled" >
+								</textarea>
+							</td>
+
+						</tr>
+
+
+					</table>
+
+					<div id="editdiv">
+
+						<a href='#' id="edit"class="btn btn-primary" onClick='fn_addtoBoard()'>수정</a>
+						<a href='#' class="btn btn-primary" onClick='deleteBoard()'>삭제</a>
+					</div>
+
+
+
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</form>
 
 
 

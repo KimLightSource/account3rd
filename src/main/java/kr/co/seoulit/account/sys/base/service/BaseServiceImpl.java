@@ -508,4 +508,18 @@ public class BaseServiceImpl implements BaseService {
 		boardDAO.updateLookup(id);
 
 	}
+
+	@Override
+	public void insertBoard(BoardBean boardbean) {
+		boardDAO.insertBoard(boardbean);
+
+		System.out.println("서비스다아ㅏ아아");
+
+	}
+
+	@Override
+	public void boardModify(BoardBean boardbean) {
+		boardDAO.boardModify(boardbean);
+
+	}
 }
