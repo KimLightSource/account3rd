@@ -576,7 +576,7 @@ function inputBudgetAppl(jsonObj){
 		var total=0;
 		for(var i=1; i<=12;i++){
 			var input=document.querySelector("#am"+i);
-			input.value=jsonObj["m"+i+"Budget"];
+			input.value=numToMoney(jsonObj["m"+i+"Budget"]+"");
 			if(input.value == "") num += 0;
 			else num+=parseInt(input.value.split(",").join(""));
 			//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
