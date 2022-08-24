@@ -3,7 +3,7 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.seoulit.account.sys.base.mapper.BoardMapper">
 
-	<resultMap id="menuResult" type="kr.co.seoulit.account.sys.base.to.BoardBean">
+	<resultMap id="insertBoard" type="kr.co.seoulit.account.sys.base.to.BoardBean">
 		<result property="id" column="ID"/>
 		<result property="title" column="TITLE"/>
 		<result property="contents" column="CONTENTS"/>
@@ -13,6 +13,12 @@
 		<result property="updateDateTime" column="UPDATE_DATE_TIME"/>
 		<result property="lookup" column="LOOKUP"/>
 		<result property="boardLike" column="BOARD_LIKE"/>
+
+		<result property="rid" column="RID"/>
+		<result property="bid" column="BID"/>
+		<result property="reContents" column="RE_CONTENTS"/>
+		<result property="reWritter" column="RE_WRITER"/>
+		<result property="reWrittedate" column="RE_WRITEDATE"/>
 	</resultMap>
 
 
@@ -27,6 +33,7 @@
 			UPDATE_DATE_TIME as updateDateTime,
 			LOOKUP as lookup
 		FROM BOARD
+		WHERE DELETE_FLAG = 'N'
 		ORDER BY ID
 
 	</select>
@@ -48,22 +55,28 @@
 			LOOKUP as lookup
 		FROM BOARD
 		WHERE ID= #{id}
+		ORDER BY ID ASC
 	</select>
-	<delete id="deleteBoardList" parameterType="String" >
+	<update id="deleteBoardList" parameterType="String" >
 
-		DELETE  FROM BOARD WHERE ID = #{id}
+		UPDATE  BOARD
+		SET
+			DELETE_FLAG = 'Y'
+		WHERE ID=#{id}
 
-	</delete>
+	</update>
 	<insert id="insertBoard" parameterType="kr.co.seoulit.account.sys.base.to.BoardBean">
 		INSERT INTO BOARD (ID,TITLE,CONTENTS,WRITTEN_BY,UPDATE_BY
-						  ,LOOKUP)
+		,LOOKUP)
 		VALUES (BOARD_Seq.NEXTVAL
-			   ,#{title}
-			   ,#{contents}
-			   ,#{writtenBy}
-			   ,#{writtenBy}
-			   ,0)
+		,#{title}
+		,#{contents}
+		,#{writtenBy}
+		,#{writtenBy}
+		,0)
 	</insert>
+
+
 
 	<update id="boardModify" parameterType="kr.co.seoulit.account.sys.base.to.BoardBean">
 		UPDATE BOARD SET
@@ -71,4 +84,48 @@
 		WHERE ID=#{id}
 
 	</update>
+
+
+
+
+
+
+	<!--  댓글 CRUD -->
+
+	<select id="selectreplyList"  parameterType="String" resultType="kr.co.seoulit.account.sys.base.to.BoardBean">
+		SELECT
+			RE.RID as rid
+			 , RE.RE_CONTENTS as reContents
+			 , RE.RE_WRITER AS reWritter
+			 ,RE.RE_WRITEDATE as reWrittedate
+		FROM BOARD_REPLY RE LEFT OUTER JOIN BOARD B
+											ON RE.BID = B.ID
+		WHERE RE.BID = #{id}
+	</select>
+
+	<insert id="insertReBoard" parameterType="kr.co.seoulit.account.sys.base.to.BoardBean" >
+		INSERT INTO BOARD_REPLY (RID,BID,RE_CONTENTS,RE_WRITER,RE_WRITEDATE)
+		VALUES (REPLY_Seq.NEXTVAL
+			   ,#{bid}
+			   ,#{reContents}
+			   ,#{reWritter}
+			   ,SYSDATE)
+	</insert>
+
+	<delete id="deleteReBoard" parameterType="String" >
+
+		DELETE  FROM BOARD_REPLY WHERE RID = #{rid}
+
+	</delete>
+	<update id="modifyReBoard" parameterType="kr.co.seoulit.account.sys.base.to.BoardBean">
+		UPDATE BOARD_REPLY SET
+			RE_CONTENTS=#{reContents}
+		WHERE RID=#{rid}
+
+	</update>
+
+
+
+
+
 </mapper>

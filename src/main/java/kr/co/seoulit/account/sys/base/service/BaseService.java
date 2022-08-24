@@ -6,6 +6,8 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import kr.co.seoulit.account.operate.system.to.AuthorityEmpBean;
 import kr.co.seoulit.account.sys.base.exception.DeptCodeNotFoundException;
 import kr.co.seoulit.account.sys.base.exception.IdNotFoundException;
@@ -59,9 +61,17 @@ public interface BaseService {
 
 	public void updateLookup(String id);
 
-	public void insertBoard(BoardBean boardbean);
+	public void insertBoard(BoardBean boardbean) throws Exception;
 
 	public void boardModify(BoardBean boardbean);
+
+	public ArrayList<BoardBean> showreply(String id);
+
+	public void insertReBoard(BoardBean boardbean);
+
+	public void deletereBoard(String rid);
+
+	public void boardReModify(BoardBean boardbean);
 
 
 }

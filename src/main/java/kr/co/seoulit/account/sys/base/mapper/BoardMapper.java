@@ -1,6 +1,7 @@
 package kr.co.seoulit.account.sys.base.mapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,5 +20,13 @@ public interface BoardMapper {
 	void insertBoard(BoardBean boardbean);
 
 	void boardModify(BoardBean boardbean);
+
+	ArrayList<BoardBean> selectreplyList(String id);
+
+	void insertReBoard(BoardBean boardbean);
+
+	void deleteReBoard(String rid);
+
+	void modifyReBoard(BoardBean boardbean);
 
 }

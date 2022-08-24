@@ -101,16 +101,18 @@
 					console.log("Row선택");
 					console.log(event.data);
 					selectedRow = event.data;
-					console.log(event.data.id);
+
 					const id=event.data.id;
 					showDetailBoard(id);
+					showreply(id);
+					console.log(event.data.id);
 
 				}
 			}
 			accountGrid = document.querySelector('#accountGrid');
 			new agGrid.Grid(accountGrid, gridOptions);
 		}
-		/* 게시판 리스트불러오는 함수임다 */
+		/* 게시판 select 함수임다 */
 		function showAccount() {
 			$.ajax({
 				type : "GET",
@@ -124,8 +126,7 @@
 			});
 		}
 
-
-		/* 게시물 상세보기함수임다~ */
+		/* 게시물 select detail임다~ */
 		function showDetailBoard(id){
 			$.ajax({
 				type : "GET",
@@ -144,7 +145,22 @@
 				}
 			});
 		}
-		/* 게시물 삭제하는 함수임다~ */
+		/* 게시글 update */
+		function fn_edit(){
+			var form = document.getElementById("writeForm");
+			form.action = "${pageContext.request.contextPath}/base/boardModify";
+			form.submit();
+		}
+		function fn_addtoBoard(){
+			$("#textarea").attr("disabled", false);
+			$("#title").attr("disabled", false);
+			$("#id").attr("disabled", false);
+			$("#textarea").focus();
+			$("#edit").hide();
+			$("#editdiv").html("<a href='#' id='edit' class='btn btn-primary  btn-lg' onClick='fn_edit()'>수정완료</a> ")
+		}
+
+		/* 게시물 delete */
 		function deleteBoard(id){
 			var ans= confirm("삭제하시겠습니까?");
 			var id = $('#id').val();
@@ -159,31 +175,109 @@
 						alert("삭제가 완료되었습니다!");
 						$("#codeModal").modal("hide");
 						location.href="${pageContext.request.contextPath}/base/board";
-
-
-
 					}
 				});
 			}
 		}
-		function fn_addtoBoard(){
-			$("#textarea").attr("disabled", false);
-			$("#title").attr("disabled", false);
-			$("#id").attr("disabled", false);
-			$("#textarea").focus();
-			$("#edit").hide();
-			$("#editdiv").html("<a href='#' id='edit' class='btn btn-primary' onClick='fn_edit()'>수정완료</a> ")
+		/* 댓글select */
+		function showreply(id){
+			$.ajax({
+				type : "GET",
+				url : "${pageContext.request.contextPath}/base/boardreplyList",
+				dataType : "json",
+				data : {"id" : id},
+				success : function(data) {
+					var a='';
+					console.log(data);
+					console.log("댓글!@@@");
+					$.each(data, function(key,value){
+						const rid= value.rid;
+						a+='<tr><td colspan="2">';
+						a+="<form id='re_form'><div>";
+						a+="<input type= 'hidden' id= 'rid' value= " +rid+ ">";
+						a+="<span id='reUpdatedate'><strong>" + value.reWritter +"</strong></span>"+"&nbsp &nbsp &nbsp";
+						a+="<span>" + value.reWrittedate+ "</span>";
+						a+="</div> <div>";
+						a+="<input type= 'text' size=30 maxlength=30 disabled='disabled' value=" +value.reContents+" id='"+rid+"'>";
+						a+="<input type= 'button' class='btn btn-primary  btn-sm' value='수정' id='re_btn'onClick='re_modify("+rid+")'>";
+						a+="<input type= 'button' class='btn btn-primary  btn-sm' value='삭제' id='re_del'onClick='re_remove()'>";
+						a+= "</div></form> </td> </tr>";
+
+						console.log(value.rid + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+					});
+
+					$("#re_content").html(a);
+
+
+				}
+			});
 		}
-		function fn_edit(){
-			var form = document.getElementById("writeForm");
-			form.action = "${pageContext.request.contextPath}/base/boardModify";
-			form.submit();
+		/* 댓글update기능 */
+		function re_modify(rid){
+			console.log(rid);
+			$("#"+rid).attr("disabled",false);
+			$("#re_del").hide();
+			$("#re_btn").attr("value","수정완료");
+			$("#re_btn").attr("onClick","modify("+rid+")")
+		}
+		function  modify(rid){
+			console.log(rid);
+			$.ajax({
+				type : "POST",
+				url : "${pageContext.request.contextPath}/base/board_re_modify",
+				dataType : "text",
+				data : {"rid" : rid ,
+					"recontents" : $("#"+rid).val()},
+				success :function(data){
+					alert("수정이 완료되었습니다!");
+					showreply($('#id').val());
+				},
+				error : function(data){
+					console.log(data +"@!#@!#@!#@!#!@#!@#$@!%!@$!@");
+				}
+			});
 		}
 
 
+		/* 댓글insert 기능 */
+		function addBoard_re(){
 
+			$.ajax({
+				type : "POST",
+				url : "${pageContext.request.contextPath}/base/board_re_insert",
+				dataType : "json",
+				data : {"id" : $('#id').val() ,
+					"reply": $('#reply').val() ,
+					"writer" : '${sessionScope.empCode}'},
+				success :function(data){
+					showreply($('#id').val());
+					$("#reply").val('');
+				},
+				error : function(data){
+					console.log(data +"@!#@!#@!#@!#!@#!@#$@!%!@$!@");
+				}
+			});
+		}
 
-
+		/* 댓글delete */
+		function re_remove(id){
+			var ans= confirm("삭제하시겠습니까?");
+			var rid = $('#rid').val();
+			console.log(" 삭제할 id 값@@@@@ :"+id  );
+			if(ans==true){
+				$.ajax({
+					type : "GET",
+					url : "${pageContext.request.contextPath}/base/replyDelete",
+					dataType : "text",
+					data : {"rid" : rid},
+					success :function(data){
+						alert("삭제가 완료되었습니다!");
+						showreply($('#id').val());
+					}
+				});
+			}
+		}
 	</script>
 	<style>
 		#header_board2 {
@@ -194,12 +288,10 @@
 			display: inline;
 			margin-left: 500px;
 		}
-		table{border-collapse : collapse;}
-		tr{ border-top: 1px solid gray;
+		table{border-collapse : separate;}
 
-		}
 		th{
-			padding: 10px;}
+			padding: 5px;}
 
 	</style>
 </head>
@@ -264,27 +356,41 @@
 								<textarea style="width: 500px" rows="20" cols="20" name="contents"
 										  id="textarea"disabled="disabled" >
 								</textarea>
-							</td>
 
+							</td>
 						</tr>
 
+						<tr>
+							<th></th>
+							<td colspan="2">
+								<div id="editdiv" style="text-align:center" >
+									<a href='#' id="edit"class="btn btn-primary  btn-lg" onClick='fn_addtoBoard()'>수정</a>
+									<a href='#' class="btn btn-primary  btn-lg" onClick='deleteBoard()'>삭제</a>
+								</div>
+							</td>
+						</tr>
+						<!--  댓글뿌리는곳이다~~ -->
+						<tr>
+							<th>댓글</th>
+							<td colspan="2">
+								<input type="text" id="reply" size=50 maxlength=50>
+								<!-- <textarea rows="1" id="reply" cols="50"></textarea>  -->
+								<a href='#' id="edit_re"class="btn btn-primary" onClick='addBoard_re()'>댓글 등록</a>
 
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="re_content"></div>
+							</td>
+						</tr>
 					</table>
-
-					<div id="editdiv">
-
-						<a href='#' id="edit"class="btn btn-primary" onClick='fn_addtoBoard()'>수정</a>
-						<a href='#' class="btn btn-primary" onClick='deleteBoard()'>삭제</a>
-					</div>
-
-
 
 				</div>
 			</div>
 		</div>
 	</div>
 </form>
-
 
 
 </body>

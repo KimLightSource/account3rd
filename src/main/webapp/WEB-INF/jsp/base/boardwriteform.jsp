@@ -28,7 +28,7 @@
 </head>
 <body>
 <div>
-	<form id="writeForm" name="writeForm" method="post">
+	<form id="writeForm" name="writeForm" method="post" enctype="multipart/form-data">
 		<div>
 			<h2>글쓰기</h2>
 			<div>
@@ -41,6 +41,14 @@
 					<tr>
 						<th>작성자</th>
 						<td><input type="text" id="writer" name="writtenBy" value="${sessionScope.empCode}" readonly/>
+					</tr>
+					<tr>
+						<th>첨부파일</th>
+						<td>
+							<div class="file_list">
+								<a th:each="list : ${board.fileList}" th:text="|${list.originalFileName}(${list.fileSize} kb)|"></a>
+							</div>
+						</td>
 					</tr>
 					<tr>
 						<th>내용</th>
