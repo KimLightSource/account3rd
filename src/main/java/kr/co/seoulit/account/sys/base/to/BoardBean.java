@@ -13,6 +13,14 @@ public class BoardBean {
 	private String updateDateTime;
 	private String lookup;
 	private String boardLike;
+
+	private String rid;
+	private String bid;
+	private String reContents;
+	private String reWritter;
+	private String reWrittedate;
+	private String reUpdatedate;
+
 	public String getId() {
 		return id;
 	}
@@ -66,6 +74,42 @@ public class BoardBean {
 	}
 	public void setBoardLike(String boardLike) {
 		this.boardLike = boardLike;
+	}
+	public String getRid() {
+		return rid;
+	}
+	public void setRid(String rid) {
+		this.rid = rid;
+	}
+	public String getBid() {
+		return bid;
+	}
+	public void setBid(String bid) {
+		this.bid = bid;
+	}
+	public String getReContents() {
+		return reContents;
+	}
+	public void setReContents(String reContents) {
+		this.reContents = reContents;
+	}
+	public String getReWritter() {
+		return reWritter;
+	}
+	public void setReWritter(String reWritter) {
+		this.reWritter = reWritter;
+	}
+	public String getReWrittedate() {
+		return reWrittedate;
+	}
+	public void setReWrittedate(String reWrittedate) {
+		this.reWrittedate = reWrittedate;
+	}
+	public String getReUpdatedate() {
+		return reUpdatedate;
+	}
+	public void setReUpdatedate(String reUpdatedate) {
+		this.reUpdatedate = reUpdatedate;
 	}
 
 
