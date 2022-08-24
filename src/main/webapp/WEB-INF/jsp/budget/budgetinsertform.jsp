@@ -487,7 +487,7 @@ function showOrganizedBudget(){
         dataType: "json",
         async:false,
         success: function (jsonObj) {
-        	
+
         	if(jsonObj.errorCode==-1){
         		for(var i=1;i<=12;i++){
         			var input=document.querySelector("#m"+i);
@@ -498,34 +498,34 @@ function showOrganizedBudget(){
             		}
         		}
         	}
-        	
+
         	console.log(jsonObj);
         	//console.log(jsonObj.budgetBean);
         	//console.log(jsonObj.budgetBean.m1Budget);
         	//var json=JSON.parse(jsonObj.budgetBean);
-        	
+
         	var num=0;
         	var sum=0;
         	for(var i=1; i<=12;i++){
         		var input=document.querySelector("#m"+i);
         		input.disabled=false;
-		
-        		if(jsonObj["m"+i+"Budget"]||jsonObj["m"+i+"Budget"]==0){
+
+        		if(jsonObj["m"+i+"Budget"]!=0){
         			var value=jsonObj["m"+i+"Budget"]+"";//numToMoney 함수 적용하기
         			input.value=numToMoney(value);
         			num+=jsonObj["m"+i+"Budget"];
-        			sum+=num;
-    				
+
         			if(i%3==0){
         				var q=document.querySelector("#q"+i/3);
         				q.value=numToMoney(num+"");
+						sum+=num;
         				num=0;
         			}
         		}
         	}
-        	
+
         	var msum=document.querySelector("#msum");
-			msum.value=numToMoney(sum+"");;
+			msum.value=numToMoney(sum+"");
         }
     });
 }
@@ -571,7 +571,7 @@ function showAppliedBudget(){
 }
 
 function inputBudgetAppl(jsonObj){
-	
+
 		var num=0;
 		var total=0;
 		for(var i=1; i<=12;i++){
@@ -580,10 +580,11 @@ function inputBudgetAppl(jsonObj){
 			if(input.value == "") num += 0;
 			else num+=parseInt(input.value.split(",").join(""));
 			//인풋의 밸류값이, 즉 3글자마다 잘린것에대해 숫자로 바꿈
-			total+=num;
+
 			if(i%3==0){//i에 3을나눠서 0일떄 즉 3,6,9,12일시
 				var aq=document.querySelector("#aq"+i/3);//분기1,2,3,4
 				aq.value=numToMoney(num+"");//돈형식으로 만들어주는 함수에 전송
+				total+=num;
 				num=0;
 			}
 		}
@@ -599,10 +600,11 @@ function valueRefresh(){
     	var input=document.querySelector("#m"+i);
     	dataSet["m"+i+"Budget"]=input.value;
     	num+=parseInt(input.value.split(",").join(""));
-    	msum+=parseInt(num);
+
     	if(i%3==0){
 			var q=document.querySelector("#q"+i/3);
 			q.value=numToMoney(num+"");
+			msum+=parseInt(num);
 			num=0;
 		}
     }
