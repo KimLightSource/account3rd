@@ -106,4 +106,12 @@ public class FormulationServiceImpl implements FormulationService {
 
 		return params;
 	}
+
+	@Override
+	public BudgetBean findCurrentBudget(BudgetBean budgetBean){
+		budgetBean = formulationDAO.selectCurrentBudget(budgetBean);
+
+		return budgetBean;
+
+	}
 }

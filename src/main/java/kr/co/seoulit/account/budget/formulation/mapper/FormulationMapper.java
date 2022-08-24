@@ -28,4 +28,6 @@ public interface FormulationMapper {
 	public void updateBudget(BudgetBean bean);
 
 	public HashMap<String, Object> selectComparisonBudget(HashMap<String, Object> params);
+
+	public BudgetBean selectCurrentBudget(BudgetBean bean);
 }

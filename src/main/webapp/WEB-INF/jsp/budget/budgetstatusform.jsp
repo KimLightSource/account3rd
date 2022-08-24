@@ -269,7 +269,7 @@
                     headerName: "당월예산대비실적",
                     children  : [
                         {headerName: "실적", field: "ambr", width: 120},
-                        {headerName: "예산", field: "monthBudget", width: 120},
+                        {headerName: "예산", field: "budget", width: 120},
                         {headerName: "잔여예산", field: "remainingMonthBudget", width: 120},
                         {headerName: "집행율(%)", field: "monthBudgetExecRate", width: 120},
                     ],
@@ -348,7 +348,7 @@
 
 
             let sum_ambr = 0;
-            let sum_monthBudget = 0;
+            let sum_budget = 0;
             let sum_remainingMonthBudget = 0;
 
             for (let b = 0; b < jsonObj["budgetStatus"].length; b++) {
@@ -356,7 +356,7 @@
                 sum_annualBudget = sum_annualBudget + jsonObj["budgetStatus"][b].annualBudget;
                 sum_remainingBudget = sum_remainingBudget  + jsonObj["budgetStatus"][b].remainingBudget;
                 sum_ambr = sum_ambr + jsonObj["budgetStatus"][b].ambr;
-                sum_monthBudget = sum_monthBudget + jsonObj["budgetStatus"][b].monthBudget;
+                sum_budget = sum_budget + jsonObj["budgetStatus"][b].budget;
                 sum_remainingMonthBudget = sum_remainingMonthBudget + jsonObj["budgetStatus"][b].remainingMonthBudget;
             }
             gridOptions.api.setPinnedBottomRowData([{
@@ -367,9 +367,9 @@
                 remainingBudget : sum_remainingBudget,
                 budgetExecRate :  sum_annualBudget == null?"-" : ((sum_abr/sum_annualBudget)*100).toFixed(3),     //(sum_abr/sum_annualBudget)*100,
                 ambr             : sum_ambr,
-                monthBudget : sum_monthBudget,
+                budget : sum_budget,
                 remainingMonthBudget : sum_remainingMonthBudget,
-                monthBudgetExecRate : sum_monthBudget == 0 ? "-" : ((sum_ambr/sum_monthBudget)*100).toFixed(3)
+                monthBudgetExecRate : sum_budget == 0 ? "-" : ((sum_ambr/sum_budget)*100).toFixed(3)
             }])
         }
 
@@ -384,9 +384,7 @@
                 dataType: "json",
                 async   : false,
                 success : function (jsonObj) {
-
                     console.log("callBudgetStatus: ", jsonObj);
-
                     gridOptions.api.setRowData(jsonObj["budgetStatus"]);
                     sum_budgetStatus(jsonObj);  //합계 그리드
                 }

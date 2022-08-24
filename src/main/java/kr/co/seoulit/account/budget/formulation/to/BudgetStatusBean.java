@@ -13,7 +13,7 @@ public class BudgetStatusBean extends BaseBean {
     private long remainingBudget;
     private double budgetExecRate;//집행률
     private long AMBR;
-    private long monthBudget;
+    private long Budget;
     private long remainingMonthBudget;
     private double monthBudgetExecRate;//집행률
 
@@ -69,12 +69,12 @@ public class BudgetStatusBean extends BaseBean {
     }
 
 
-    public long getMonthBudget() {
-        return monthBudget;
+    public long getBudget() {
+        return Budget;
     }
 
-    public void setMonthBudget(long monthBudget) {
-        this.monthBudget = monthBudget;
+    public void setBudget(long Budget) {
+        this.Budget = Budget;
     }
 
     public long getRemainingMonthBudget() {

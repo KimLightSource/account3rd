@@ -70,7 +70,9 @@ public class FormulationController {
         map = formulationService.registerBudget(budgetBean);
         return map;
 
-    };
+    }
+
+    ;
 
     @PutMapping("/budgetlist")
     public ModelMap modifyBudget(@RequestParam(value = "budgetObj") String budgetObj) {
@@ -81,8 +83,7 @@ public class FormulationController {
             formulationService.modifyBudget(budgetBean);
             map.put("errorCode", 1);
             map.put("errorMsg", "성공!");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             map.put("errorCode", -1);
             map.put("exceptionClass", e.getClass());
         }
@@ -107,9 +108,9 @@ public class FormulationController {
     @GetMapping("/budgetappl")
     public BudgetBean findBudgetAppl(@RequestParam String budgetObj) {
 
-    	JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
-    	BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
-    	
+        JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
+        BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
+
         return formulationService.findBudgetAppl(budgetBean);
     }
 
@@ -130,5 +131,15 @@ public class FormulationController {
 
         System.out.println("params = " + params);
         return params;
+    }
+
+    @GetMapping("/currentbudget")
+    public BudgetBean findCurrentBudget(@RequestParam String budgetObj) {
+
+        JSONObject budgetJsonObj = JSONObject.fromObject(budgetObj); //예산
+        BudgetBean budgetBean = beanCreator.create(budgetJsonObj, BudgetBean.class);
+
+
+        return formulationService.findCurrentBudget(budgetBean);
     }
 }

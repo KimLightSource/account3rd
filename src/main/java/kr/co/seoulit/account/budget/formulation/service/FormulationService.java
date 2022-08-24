@@ -27,4 +27,6 @@ public interface FormulationService {
 	public ModelMap modifyBudget(BudgetBean bean);
 
 	public HashMap<String, Object> findComparisonBudget(HashMap<String, Object> bean);
+
+    public BudgetBean findCurrentBudget(BudgetBean budgetBean);
 }
