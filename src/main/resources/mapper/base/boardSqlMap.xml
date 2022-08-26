@@ -47,15 +47,30 @@
 
 	<select id="selectDetailBoardList"  parameterType="String" resultType="kr.co.seoulit.account.sys.base.to.BoardBean">
 		SELECT
-			ID as id,
-			TITLE  as title,
-			CONTENTS as contents,
-			WRITTEN_BY as writtenBy,
-			WRITE_DATE as writeDate,
-			LOOKUP as lookup
-		FROM BOARD
-		WHERE ID= #{id}
-		ORDER BY ID ASC
+			B.ID as id,
+			B.TITLE  as title,
+			B.CONTENTS as contents,
+			B.WRITTEN_BY as writtenBy,
+			B.WRITE_DATE as writeDate,
+			B.LOOKUP as lookup,
+			f.FILE_ORINAME as fileOriName
+		FROM BOARD B, Board_FILE f
+		WHERE B.ID= #{id}
+		ORDER BY B.ID ASC
+	</select>
+	<select id="selectDetailBoardList1"  parameterType="String" resultType="kr.co.seoulit.account.sys.base.to.BoardBean">
+		SELECT
+			B.ID as id,
+			B.TITLE  as title,
+			B.CONTENTS as contents,
+			B.WRITTEN_BY as writtenBy,
+			B.WRITE_DATE as writeDate,
+			B.LOOKUP as lookup,
+			f.FILE_ORINAME as fileOriName,
+			f.FILE_NAME as fileName
+		FROM BOARD B, Board_FILE f
+		WHERE B.ID= #{id} and B.ID = F.BOARD_ID
+		ORDER BY B.ID ASC
 	</select>
 	<update id="deleteBoardList" parameterType="String" >
 
@@ -124,7 +139,21 @@
 
 	</update>
 
+<!--	<resultMap id="fileInsertBoard" type="kr.co.seoulit.account.sys.base.to.BoardFIleBean">-->
+<!--		<result property="fileId" column="FILE_ID"/>-->
+<!--		<result property="boardId" column="BOARD_ID"/>-->
+<!--		<result property="fileName" column="FILE_NAME"/>-->
+<!--		<result property="fileOriName" column="FILE_ORINAME"/>-->
+<!--		<result property="fileUrl" column="FILE_URL"/>-->
+<!--	</resultMap>-->
 
+<insert id="fileInsert" parameterType="kr.co.seoulit.account.sys.base.to.BoardBean">
+	<![CDATA[
+	INSERT INTO
+		BOARD_FILE (FILE_ID, BOARD_ID, FILE_NAME, FILE_ORINAME, FILE_URL)
+VALUES ( BOARD_FILE_SEQ.NEXTVAL,BOARD_Seq.currval,#{fileName},#{fileOriName},#{fileUrl})
+	]]>
+</insert>
 
 
 

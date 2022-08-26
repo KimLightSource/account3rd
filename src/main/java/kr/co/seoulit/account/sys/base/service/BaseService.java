@@ -6,17 +6,12 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import kr.co.seoulit.account.sys.base.to.*;
 
 import kr.co.seoulit.account.operate.system.to.AuthorityEmpBean;
 import kr.co.seoulit.account.sys.base.exception.DeptCodeNotFoundException;
 import kr.co.seoulit.account.sys.base.exception.IdNotFoundException;
 import kr.co.seoulit.account.sys.base.exception.PwMissmatchException;
-import kr.co.seoulit.account.sys.base.to.BoardBean;
-import kr.co.seoulit.account.sys.base.to.CodeBean;
-import kr.co.seoulit.account.sys.base.to.DetailCodeBean;
-import kr.co.seoulit.account.sys.base.to.IreportBean;
-import kr.co.seoulit.account.sys.base.to.MenuBean;
 import kr.co.seoulit.account.operate.humanresource.to.EmployeeBean;
 
 public interface BaseService {
@@ -57,6 +52,8 @@ public interface BaseService {
 
 	public ArrayList<BoardBean> findDetailboardList(String id);
 
+	public ArrayList<BoardBean> findDetailboardList1(String id);
+
 	public void deleteBoard(String id);
 
 	public void updateLookup(String id);
@@ -73,5 +70,7 @@ public interface BaseService {
 
 	public void boardReModify(BoardBean boardbean);
 
+	public void fileInsert(BoardBean boardBean) throws Exception;
+//	public void fileInsert(BoardFIleBean boardFIleBean) throws Exception;
 
 }

@@ -45,9 +45,7 @@
 					<tr>
 						<th>첨부파일</th>
 						<td>
-							<div class="file_list">
-								<a th:each="list : ${board.fileList}" th:text="|${list.originalFileName}(${list.fileSize} kb)|"></a>
-							</div>
+							<input type="file" name="files" multiple="multiple"/>
 						</td>
 					</tr>
 					<tr>

@@ -1,35 +1,24 @@
 package kr.co.seoulit.account.sys.base.service;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import kr.co.seoulit.account.sys.base.to.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.co.seoulit.account.operate.system.mapper.AuthorityGroupMapper;
-import kr.co.seoulit.account.operate.system.to.AccountBean;
 import kr.co.seoulit.account.operate.system.to.AuthorityEmpBean;
 import kr.co.seoulit.account.sys.base.exception.DeptCodeNotFoundException;
 import kr.co.seoulit.account.sys.base.exception.IdNotFoundException;
@@ -39,11 +28,6 @@ import kr.co.seoulit.account.sys.base.mapper.CodeMapper;
 import kr.co.seoulit.account.sys.base.mapper.DetailCodeMapper;
 import kr.co.seoulit.account.sys.base.mapper.MenuMapper;
 import kr.co.seoulit.account.sys.base.mapper.PeriodMapper;
-import kr.co.seoulit.account.sys.base.to.BoardBean;
-import kr.co.seoulit.account.sys.base.to.CodeBean;
-import kr.co.seoulit.account.sys.base.to.DetailCodeBean;
-import kr.co.seoulit.account.sys.base.to.IreportBean;
-import kr.co.seoulit.account.sys.base.to.MenuBean;
 import kr.co.seoulit.account.sys.common.exception.DataAccessException;
 import kr.co.seoulit.account.sys.common.sl.ServiceLocator;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +41,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperReportsContext;
-import net.sf.jasperreports.engine.SimpleJasperReportsContext;
 import net.sf.jasperreports.engine.query.JRQueryExecuterFactory;
 import net.sf.jasperreports.engine.query.QueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -503,6 +486,12 @@ public class BaseServiceImpl implements BaseService {
 		accountList = boardDAO.selectDetailBoardList(id);
 		return accountList;
 	}
+	@Override
+	public ArrayList<BoardBean> findDetailboardList1(String id) {
+		ArrayList<BoardBean> accountList = null;
+		accountList = boardDAO.selectDetailBoardList1(id);
+		return accountList;
+	}
 
 	@Override
 	@Transactional
@@ -562,5 +551,10 @@ public class BaseServiceImpl implements BaseService {
 	public void boardReModify(BoardBean boardbean) {
 		// TODO Auto-generated method stub
 		boardDAO.modifyReBoard(boardbean);
+	}
+
+	@Override
+	public void fileInsert(BoardBean boardBean) throws Exception{
+		boardDAO.fileInsert(boardBean);
 	}
 }
