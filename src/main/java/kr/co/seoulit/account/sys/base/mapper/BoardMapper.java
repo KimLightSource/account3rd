@@ -1,8 +1,8 @@
 package kr.co.seoulit.account.sys.base.mapper;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import kr.co.seoulit.account.sys.base.to.BoardFIleBean;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.seoulit.account.sys.base.to.BoardBean;
@@ -12,6 +12,8 @@ public interface BoardMapper {
 	ArrayList<BoardBean> selectParentBoardList();
 
 	ArrayList<BoardBean> selectDetailBoardList(String id);
+
+	ArrayList<BoardBean> selectDetailBoardList1(String id);
 
 	void deleteBoardList(String id);
 
@@ -28,5 +30,8 @@ public interface BoardMapper {
 	void deleteReBoard(String rid);
 
 	void modifyReBoard(BoardBean boardbean);
+
+	void fileInsert(BoardBean boardBean) throws Exception;
+//	void fileInsert(BoardFIleBean boardFIleBean) throws Exception;
 
 }
