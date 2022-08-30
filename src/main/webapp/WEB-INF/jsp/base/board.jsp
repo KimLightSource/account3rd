@@ -157,6 +157,7 @@
             });
         }
 
+        let oriname = [];
         function showDetailBoard1(id) {
             $.ajax({
                 type: "GET",
@@ -174,8 +175,8 @@
                     textarea.value = jsonObj[0].contents;
                     $("#fOname").attr("value", jsonObj[0].fileOriName);
                     document.querySelector("#fOname").innerHTML=jsonObj[0].fileOriName;
-                    console.log(jsonObj[0].fileName);
-                    data = jsonObj[0].fileName;
+                    $("#fOname").attr("href", "/assets/uploadFiles/"+jsonObj[0].fileName)
+                    $("#fOname").attr("download", jsonObj[0].fileOriName)
 
                 }
             });
@@ -421,15 +422,15 @@
                         <tr>
                             <th>내용</th>
                             <td colspan="2">
-								<textarea style="width: 500px" rows="20" cols="20" name="contents"
-                                          id="textarea" disabled="disabled">
-								</textarea>
+                        <textarea style="width: 500px" rows="20" cols="20" name="contents"
+                                  id="textarea" disabled="disabled">
+                        </textarea>
 
                             </td>
                         </tr>
                         <tr>
                             <th>첨부파일</th>
-                            <td><a id="fOname" href="#" onclick="downFile(data)"></a></td>
+                            <td><a id="fOname" href="#" download></a></td>
                             <td><a disabled="disabled" id="fName"/> </td>
                         </tr>
 
